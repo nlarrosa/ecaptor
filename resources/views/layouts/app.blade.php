@@ -14,7 +14,10 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
+        <x-laravel-blade-sortable::scripts/>
         <script src="{{ asset('js/app.js') }}" defer></script>
+
+        
 
         @livewireStyles
 
@@ -37,5 +40,6 @@
 
         @livewireScripts
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+        <script src="{{ asset('js/ecaptor.js') }}" defer></script>
     </body>
 </html>

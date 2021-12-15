@@ -5,44 +5,80 @@ namespace App\Http\Livewire\Cart;
 use App\Models\Border;
 use Illuminate\Support\Arr;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class ShoppingAddSteps extends Component
 {
 
+    use WithFileUploads;
 
-    public  string $modalOpen;
-    public  int    $cantidad;
-    public  int    $productId;
-    public  string $border;
-    public  string $borderLados;
-    public  string $borderType;
-    public  int    $step;
-    public  array  $arrCartSetting;
-    public  string $typeLogo;
-    public  string $borderCss;
+    public  $modalOpen;
+    public  $cantidad;
+    public  $productId;
+    public  $border;
+    public  $borderLados;
+    public  $borderType;
+    public  $step;
+    public  $arrCartSetting;
+    public  $typeLogo;
+    public  $borderCss;
+    public  $buttonStatus;
+    public  $msgFileUpload;
+    public  $textLogo;
+    public  $comentLogo;
+    public  $sector;
+    public  $logo;
+
+
+    public   $arrColorBase;
+    public   $arrColorLogo;
+    public   $arrColorLetras;
+    public   $arrColorBordes;
 
 
 
     protected $listeners = [
         'openModalSteps' => 'openModalSettingCart',
+        'selctedColor'   => 'selectedColor'
     ];
 
+
+
+    protected $messages = [
+        'borderType.required_unless' => 'Seleccione un tipo de borde.',
+        'borderLados.required_if' => 'Seleccione la ubicacion de los bordes',
+        'logo.mimes' => 'Solo acepta formato .ai - .pdf - .cdr',
+        'logo.max' => 'El peso maximo del archivo puede ser de 20 mb.',
+        'logo.required' => 'Debe subir un archivo con el logo o verifique el formato del archivo. Solo acepta .ai - .cdr - .pdf',
+        'textLogo.required' => 'Debe ingresar un texto para el diseño.',
+        'textLogo.min' => 'El texto del diseño debe tener mínimo 2 caracteres',
+    ];
 
 
 
     public function mount()
     {
-        $this->modalOpen   = '';
-        $this->cantidad    = 1;
-        $this->border      = 0;
-        $this->borderLados = '';
-        $this->borderType  = '';
-        $this->step        = 1;
-        $this->productId   = 0;
+        $this->modalOpen    = '';
+        $this->cantidad     = 1;
+        $this->border       = 0;
+        $this->borderLados  = '';
+        $this->borderType   = '';
+        $this->step         = 1;
+        $this->productId    = 0;
         $this->arrCartSetting = [];
-        $this->typeLogo    = 'File';
-        $this->borderCss   = '';
-
+        $this->typeLogo      = 'File';
+        $this->borderCss     = '';
+        $this->logo          = '';
+        $this->buttonStatus  = 'disabled';
+        $this->msgFileUpload = '';
+        $this->textLogo      = '';
+        $this->comentLogo    = '';
+        $this->sector        = '';
+        $this->arrColorsBase   = [];
+        $this->arrColorsLogo   = [];
+        $this->arrColorsLetras = [];
+        $this->arrColorsBordes = [];
     }
 
 
@@ -70,7 +106,19 @@ class ShoppingAddSteps extends Component
             break;
 
             case '3':
-                $this->borderSetting();
+                $this->colorBaseSetting();
+            break;
+
+            case '4':
+                $this->colorLogoSetting();
+            break;
+
+            case '5':
+                $this->colorLetrasSetting();
+            break;
+
+            case '6':
+                $this->colorBordesSetting();
             break;
         }
     }
@@ -80,25 +128,194 @@ class ShoppingAddSteps extends Component
      * Agrega al array de carrito los datos seleccionados
      * referido a los bordes yla cantidad
      */
-    private function borderSetting()
+    public function borderSetting()
     {
+
+        $this->validateBorderSetting();
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product',      $this->productId);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',     $this->border);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',     $this->cantidad);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.cant',  $this->border);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.lados', $this->borderLados);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.tipo',  $this->borderType);
+        // dd($this->arrCartSetting);
+        
+        $this->buttonStatus = 'disabled';
+        $this->step = $this->step + 1;
 
-        dd($this->arrCartSetting);
+    }
+    
+
+
+    /**
+     * Validacion de los campos en el settiing
+     * de bordes
+     */
+    private function validateBorderSetting()
+    {
+        $this->validate([
+
+            'borderType' => 'required_unless:border,>,0',
+            'borderLados' => 'required_if:borderType,=,ANTITROPIEZO',
+        ]);
+    }
+
+
+    
+    /**
+     * Guardamos el archivo del logo y la data
+     * la agregamos en el array
+     */
+    public function designSetting()
+    {
+
+        if($this->typeLogo == 'File')
+        {
+            $this->validate([
+                'logo' => 'required|mimes:ai,cdr,pdf|max:20480',
+            ]);
+
+            $fileName = $this->logo->getClientOriginalName();
+            $extension = $this->logo->getClientOriginalExtension();
+            $this->logo->storeAs('/logos', $fileName, 'public');
+            Storage::disk('local')->delete('/livewire-temp/'.$this->logo->getFilename());
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.filename',  $fileName);
+
+        }else{
+
+            $this->validate([
+                'textLogo' => 'required|min:2',
+            ]);
+
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.textlogo',  $this->textLogo);
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.comment',   $this->comentLogo);
+        }
+        
+        // dd($this->arrCartSetting);
         $this->step = $this->step + 1;
     }
 
 
 
-    public function designSetting()
+    public function colorBaseSetting()
     {
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.file',  $this->border);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.base',   $this->arrColorBase);
+        $this->step = $this->step + 1;
+        // dd($this->arrCartSetting);
     }
 
+
+
+    public function colorLogoSetting()
+    {
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.logo',   $this->arrColorLogo);
+        $this->step = $this->step + 1;
+        // dd($this->arrCartSetting);
+    }
+
+
+
+    public function colorLetrasSetting()
+    {
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.letras',   $this->arrColorLetras);
+        $this->step = $this->step + 1;
+        // dd($this->arrCartSetting);
+    }
+
+
+    public function colorBordesSetting()
+    {
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.bordes',   $this->arrColorBordes);
+        // $this->step = $this->step + 1;
+        dd($this->arrCartSetting);
+    }
+
+
+
+    /**
+     * Carga los colores en un array segun el sector para 
+     * mostrar en el setting y para guaradr luego en la db
+     */
+    public function selectedColor(string $sector, int $color, string $name): void
+    {
+        switch ($sector) 
+        {
+            case 'base':
+                $this->arrColorBase = Arr::add($this->arrColorBase, $color, $name);
+            break;
+            case 'logo':
+                $this->arrColorLogo = Arr::add($this->arrColorLogo, $color, $name);
+            break;
+            case 'letras':
+                $this->arrColorLetras = Arr::add($this->arrColorLetras, $color, $name);
+            break;
+            case 'bordes':
+                $this->arrColorBordes = Arr::add($this->arrColorBordes, $color, $name);
+            break;
+            
+            default:
+            break;
+        }
+    }
+
+
+
+    /**
+     * Elimina los colores del array cuando el usuario 
+     * quiere borrar lo que agrego segun el sector
+     */
+    public function deleteColor(string $sector, int $color): void
+    {
+        switch ($sector) 
+        {
+            case 'base':
+                Arr::pull($this->arrColorBase, $color);
+            break;
+            case 'logo':
+                Arr::pull($this->arrColorLogo, $color);
+            break;
+            case 'letras':
+                Arr::pull($this->arrColorLetras, $color);
+            break;
+            case 'bordes':
+                Arr::pull($this->arrColorBordes, $color);
+            break;
+            
+            default:
+            break;
+        }
+    }
+
+    /**
+     * Validamos la subida del archivo y cambiamos
+     * el mensaje cuando esta ok para subirlo
+     */
+    public function updatedLogo()
+    {
+        $this->msgFileUpload = '';
+        $this->buttonStatus = 'disabled';
+
+        $this->validate([
+            'logo' => 'required|mimes:ai,cdr,pdf|max:20480',
+        ]);
+
+        $this->msgFileUpload = 'Su archivo '.$this->logo->getClientOriginalName().' se subio correctamente';
+        $this->buttonStatus = '';
+    }
+
+
+
+    /**
+     * Elimina el archivo que se subio 
+     * y resetea la variable
+     */
+    public function deleteTemporalLogo()
+    {
+        if(!empty($this->logo))
+        {
+            Storage::disk('local')->delete('/livewire-temp/'.$this->logo->getFilename());
+            $this->reset(['logo']);
+        }
+    }
 
 
 
@@ -133,6 +350,11 @@ class ShoppingAddSteps extends Component
     }
 
 
+
+    /**
+     * Retorna los estilos que generan la vista del 
+     * borde en la seleccion
+     */
     public function updatingBorderLados($value)
     {
         $this->borderCss = Border::getCssUbicacionBorde($value);
@@ -140,6 +362,26 @@ class ShoppingAddSteps extends Component
     
 
 
+    public function updatingtypeLogo($value)
+    {
+        if($value == 'File')
+        {
+            $this->buttonStatus = 'disabled';
+
+        } else {
+
+            $this->buttonStatus = '';
+            $this->msgFileUpload = '';
+            $this->deleteTemporalLogo();
+        }
+    }
+
+
+
+    /**
+     * Inicializamos todas las variables
+     * en un reset
+     */
     public function cartReset()
     {
         $this->modalOpen = '';
@@ -150,9 +392,23 @@ class ShoppingAddSteps extends Component
         $this->borderType  = '';
         $this->productId   = 0;
         $this->arrCartSetting = [];
-        $this->typeLogo    = 'File';
-        $this->borderCss   = '';
+        $this->typeLogo       = 'File';
+        $this->borderCss      = '';
+        $this->msgFileUpload  = '';
+        $this->textLogo = '';
+        $this->comentLogo = '';
 
+    }
+
+
+
+    /**
+     * actualiza el componente y las variables
+     */
+    public function hydrate()
+    {
+        $this->resetErrorBag();
+        $this->resetValidation();
     }
 
 

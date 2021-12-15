@@ -13,9 +13,9 @@ class Lines extends Component
 {
     use WithPagination;
 
-    public  Collection $categories;
-    public  string     $categoryFilter; 
-    public  string     $search;   
+    public  $categories;
+    public  $categoryFilter; 
+    public  $search;   
 
 
     

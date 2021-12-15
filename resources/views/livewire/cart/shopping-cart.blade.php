@@ -1,3 +1,4 @@
+<div>
 <div class="row my-8">
     <div class="grid grid-cols-3">
         <div>
@@ -80,4 +81,5 @@
 
     <x-modal-sale />
 
+</div>
 </div>

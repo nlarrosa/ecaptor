@@ -12,12 +12,12 @@ class ShoppingAdd extends Component
 {
     use WithPagination;
 
-    public  int    $lineId;
-    public  string $searchWidth;  
-    public  string $searchHeight; 
+    public  $lineId;
+    public  $searchWidth;  
+    public  $searchHeight; 
 
     /** CART */
-    public array   $cantidad;
+    public $cantidad;
 
 
 
