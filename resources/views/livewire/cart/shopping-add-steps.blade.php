@@ -143,7 +143,8 @@
                         <div class="avatar my-auto">
                             <div class="w-full h-48 border-gray-400 border">
                                 <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer" id="base">
-                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center" id="baseColor">
+                                    <div class="text-gray-300 font-bold relative text-center text-4xl">BASE</div>
+                                    <div class="grid grid-cols-{{ count($arrColorBase, 1) }} my-8 gap-x-3 gap-y-2 mx-7 justify-center absolute" id="baseColor">
                                         @if($arrColorBase)
                                             @foreach($arrColorBase as $i => $name)
                                             
@@ -162,17 +163,20 @@
                                         @endif
                                     </div>
                                 </div>
+                                @error('arrColorBase') 
+                                    @livewire('ui.alert', [ 'message' =>  $message, 'status' => 'error'])
+                                @enderror
                         |   </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="grid grid-cols-7 my-8 gap-x-1 gap-y-2 mx-7">
-                        @for($i = 1; $i <= 27; $i++)
-                            <div data-tip="color_{{ $i }}" class="tooltip cursor-pointer">
-                                <img wire:click="selectedColor( 'base',  {{ $i }} , 'violeta'  )" src="{{ asset('img/rubercolors/color_'.$i.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
+                        @foreach($arrColors as $color)
+                            <div data-tip="{{ $color->name }}" class="tooltip cursor-pointer">
+                                <img wire:click="selectedColor( 'base',  {{ $color->code }} , '{{ $color->name }}'  )" src="{{ asset('img/rubercolors/color_'.$color->code.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
@@ -217,11 +221,11 @@
                 </div>
                 <div class="row">
                     <div class="grid grid-cols-7 my-8 gap-x-1 gap-y-2 mx-7">
-                        @for($i = 1; $i <= 27; $i++)
-                            <div data-tip="color_{{ $i }}" class="tooltip cursor-pointer">
-                                <img wire:click="selectedColor( 'logo',  {{ $i }} , 'violeta'  )" src="{{ asset('img/rubercolors/color_'.$i.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
+                        @foreach($arrColors as $color)
+                            <div data-tip="{{ $color->name }}" class="tooltip cursor-pointer">
+                                <img wire:click="selectedColor( 'logo',  {{ $color->code }} , '{{ $color->name }}'  )" src="{{ asset('img/rubercolors/color_'.$color->code.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
@@ -267,11 +271,11 @@
                 </div>
                 <div class="row">
                     <div class="grid grid-cols-7 my-8 gap-x-1 gap-y-2 mx-7">
-                        @for($i = 1; $i <= 27; $i++)
-                            <div data-tip="color_{{ $i }}" class="tooltip cursor-pointer">
-                                <img wire:click="selectedColor( 'letras',  {{ $i }} , 'violeta'  )" src="{{ asset('img/rubercolors/color_'.$i.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
+                        @foreach($arrColors as $color)
+                            <div data-tip="{{ $color->name }}" class="tooltip cursor-pointer">
+                                <img wire:click="selectedColor( 'letras',  {{ $color->code }} , '{{ $color->name }}'  )" src="{{ asset('img/rubercolors/color_'.$color->code.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
@@ -317,11 +321,11 @@
                 </div>
                 <div class="row">
                     <div class="grid grid-cols-7 my-8 gap-x-1 gap-y-2 mx-7">
-                        @for($i = 1; $i <= 27; $i++)
-                            <div data-tip="color_{{ $i }}" class="tooltip cursor-pointer">
-                                <img wire:click="selectedColor( 'bordes',  {{ $i }} , 'violeta'  )" src="{{ asset('img/rubercolors/color_'.$i.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
+                        @foreach($arrColors as $color)
+                            <div data-tip="{{ $color->name }}" class="tooltip cursor-pointer">
+                                <img wire:click="selectedColor( 'bordes', {{ $color->code }} , '{{ $color->name }}' )" src="{{ asset('img/rubercolors/color_'.$color->code.'.png') }}" alt="color_violeta" class="w-12 h-12 rounded-full">
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
@@ -330,7 +334,7 @@
                 </div>
             </form>
             @endif
-            {{-- End Setting Colores Letras --}}
+            {{-- End Setting Colores bordes --}}
         </div>
     </div>
 </div>

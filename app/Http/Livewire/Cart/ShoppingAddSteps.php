@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Cart;
 
 use App\Models\Border;
+use App\Models\Color;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -29,6 +30,7 @@ class ShoppingAddSteps extends Component
     public  $comentLogo;
     public  $sector;
     public  $logo;
+    public  $arrColors;
 
 
     public   $arrColorBase;
@@ -53,6 +55,10 @@ class ShoppingAddSteps extends Component
         'logo.required' => 'Debe subir un archivo con el logo o verifique el formato del archivo. Solo acepta .ai - .cdr - .pdf',
         'textLogo.required' => 'Debe ingresar un texto para el diseño.',
         'textLogo.min' => 'El texto del diseño debe tener mínimo 2 caracteres',
+        'arrColorBase.required' => 'Debe Seleccionar al menos un color.',
+        'arrColorLogo.required' => 'Debe Seleccionar al menos un color.',
+        'arrColorLetras.required' => 'Debe Seleccionar al menos un color.',
+        'arrColorBordes.required' => 'Debe Seleccionar al menos un color.',
     ];
 
 
@@ -64,7 +70,7 @@ class ShoppingAddSteps extends Component
         $this->border       = 0;
         $this->borderLados  = '';
         $this->borderType   = '';
-        $this->step         = 1;
+        $this->step         = 3;
         $this->productId    = 0;
         $this->arrCartSetting = [];
         $this->typeLogo      = 'File';
@@ -79,6 +85,7 @@ class ShoppingAddSteps extends Component
         $this->arrColorsLogo   = [];
         $this->arrColorsLetras = [];
         $this->arrColorsBordes = [];
+        $this->arrColors        = Color::all();
     }
 
 
@@ -198,9 +205,13 @@ class ShoppingAddSteps extends Component
 
     public function colorBaseSetting()
     {
+        $this->validate([
+            'arrColorBase' => 'required',
+        ]);
+
+
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.base',   $this->arrColorBase);
         $this->step = $this->step + 1;
-        // dd($this->arrCartSetting);
     }
 
 
@@ -209,7 +220,6 @@ class ShoppingAddSteps extends Component
     {
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.logo',   $this->arrColorLogo);
         $this->step = $this->step + 1;
-        // dd($this->arrCartSetting);
     }
 
 
@@ -218,7 +228,6 @@ class ShoppingAddSteps extends Component
     {
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.letras',   $this->arrColorLetras);
         $this->step = $this->step + 1;
-        // dd($this->arrCartSetting);
     }
 
 
@@ -397,6 +406,10 @@ class ShoppingAddSteps extends Component
         $this->msgFileUpload  = '';
         $this->textLogo = '';
         $this->comentLogo = '';
+        $this->arrColorBase  = [];
+        $this->arrColorLogo  = [];
+        $this->arrColorLetras  = [];
+        $this->arrColorBordes  = [];
 
     }
 
