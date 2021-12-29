@@ -41,5 +41,16 @@
         @livewireScripts
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
         <script src="{{ asset('js/ecaptor.js') }}" defer></script>
+
+        <script>
+           
+
+            window.addEventListener('ModalAlert', event => {
+                const icon  = event.detail.icon;
+                const title = event.detail.title;
+                successAlert(icon, title);
+            })
+
+        </script>
     </body>
 </html>

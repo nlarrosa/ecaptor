@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'profile_id' => $this->faker->randomNumber(2, 100),
             'status_id'  => $this->faker->numberBetween($min=1, $max=3),
             'rol_id'  => $this->faker->numberBetween($min=1, $max=3),
+            'bussines' => $this->faker->company(),
         ];
     }
 

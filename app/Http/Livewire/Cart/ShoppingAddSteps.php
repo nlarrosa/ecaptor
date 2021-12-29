@@ -4,10 +4,12 @@ namespace App\Http\Livewire\Cart;
 
 use App\Models\Border;
 use App\Models\Color;
+use App\Models\Product;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use App\Services\PayUService\Exception;
 
 class ShoppingAddSteps extends Component
 {
@@ -17,6 +19,7 @@ class ShoppingAddSteps extends Component
     public  $modalOpen;
     public  $cantidad;
     public  $productId;
+    public  $product;
     public  $border;
     public  $borderLados;
     public  $borderType;
@@ -25,12 +28,14 @@ class ShoppingAddSteps extends Component
     public  $typeLogo;
     public  $borderCss;
     public  $buttonStatus;
+    public  $buttonName;
     public  $msgFileUpload;
     public  $textLogo;
     public  $comentLogo;
     public  $sector;
     public  $logo;
     public  $arrColors;
+    public $arrCart;
 
 
     public   $arrColorBase;
@@ -70,13 +75,14 @@ class ShoppingAddSteps extends Component
         $this->border       = 0;
         $this->borderLados  = '';
         $this->borderType   = '';
-        $this->step         = 3;
+        $this->step         = 1;
         $this->productId    = 0;
         $this->arrCartSetting = [];
         $this->typeLogo      = 'File';
         $this->borderCss     = '';
         $this->logo          = '';
         $this->buttonStatus  = 'disabled';
+        $this->buttonName    = 'SIGUIENTE';
         $this->msgFileUpload = '';
         $this->textLogo      = '';
         $this->comentLogo    = '';
@@ -85,22 +91,26 @@ class ShoppingAddSteps extends Component
         $this->arrColorsLogo   = [];
         $this->arrColorsLetras = [];
         $this->arrColorsBordes = [];
-        $this->arrColors        = Color::all();
+        $this->arrColors       = Color::all();
+        $this->arrCart         = [];
     }
-
-
+    
+    
     /** Abrimos el modal y recibimos el producto id
      * que vamos a generar el  setting para cargar
      */
     public function openModalSettingCart($productId): void
     {
+        // session()->forget('cart');
+        // dd(session()->get('cart'));
         $this->modalOpen = 'modal-open';
         $this->productId = $productId;
+        $this->product   = Product::findOrFail($productId);
     }
 
 
 
-    public function cartSetting()
+    public function cartSetting():void
     {
         switch ($this->step) {
 
@@ -135,15 +145,21 @@ class ShoppingAddSteps extends Component
      * Agrega al array de carrito los datos seleccionados
      * referido a los bordes yla cantidad
      */
-    public function borderSetting()
+    public function borderSetting(): void
     {
 
         $this->validateBorderSetting();
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product',      $this->productId);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.id',     $this->productId);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.name',   $this->product->name);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.width',  $this->product->width);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.height', $this->product->height);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.price',  $this->product->price);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.priceTotal',  ($this->product->price * $this->cantidad));
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',     $this->cantidad);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.cant',  $this->border);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.lados', $this->borderLados);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.tipo',  $this->borderType);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.precio',  ($this->border * 1.5));
         // dd($this->arrCartSetting);
         
         $this->buttonStatus = 'disabled';
@@ -157,7 +173,7 @@ class ShoppingAddSteps extends Component
      * Validacion de los campos en el settiing
      * de bordes
      */
-    private function validateBorderSetting()
+    private function validateBorderSetting(): void
     {
         $this->validate([
 
@@ -172,7 +188,7 @@ class ShoppingAddSteps extends Component
      * Guardamos el archivo del logo y la data
      * la agregamos en el array
      */
-    public function designSetting()
+    public function designSetting(): void
     {
 
         if($this->typeLogo == 'File')
@@ -202,8 +218,11 @@ class ShoppingAddSteps extends Component
     }
 
 
-
-    public function colorBaseSetting()
+    /**
+     * Agrega al array e cart los valores del 
+     * color de la base de tapete
+     */
+    public function colorBaseSetting(): void
     {
         $this->validate([
             'arrColorBase' => 'required',
@@ -215,29 +234,109 @@ class ShoppingAddSteps extends Component
     }
 
 
-
-    public function colorLogoSetting()
+    /**
+     * Agrega al array e cart los valores del 
+     * color del logo de tapete
+     */
+    public function colorLogoSetting(): void
     {
+        $this->validate([
+            'arrColorLogo' => 'required',
+        ]);
+
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.logo',   $this->arrColorLogo);
+
+        if(!$this->validateExistBorder())
+            $this->buttonName = 'AGREGAR AL CARRITO';
+        
         $this->step = $this->step + 1;
     }
 
 
-
-    public function colorLetrasSetting()
+    /**
+     * Agrega al array e cart los valores del 
+     * color de las letras del tapete
+     */
+    public function colorLetrasSetting(): void
     {
+        $this->validate([
+            'arrColorLetras' => 'required',
+        ]);
+
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.letras',   $this->arrColorLetras);
-        $this->step = $this->step + 1;
+
+        if($this->validateExistBorder())
+        {
+            $this->buttonName = 'AGREGAR AL CARRITO';
+            $this->step = $this->step + 1;
+
+        } else {
+           
+            $this->addToCart();
+        }
     }
 
 
-    public function colorBordesSetting()
+    /**
+     * Agrega al array e cart los valores del 
+     * color del borde del tapete
+     */
+    public function colorBordesSetting(): void
     {
+        $this->validate([
+            'arrColorBordes' => 'required',
+        ]);
+
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.bordes',   $this->arrColorBordes);
-        // $this->step = $this->step + 1;
-        dd($this->arrCartSetting);
+        $this->addToCart();
     }
 
+
+    /**
+     * Valida si se selecciono borde o no, o si el borde es
+     * del tipo termofundido, para saber si agregamos el paso 
+     * color de borde
+     */
+    private function validateExistBorder(): bool
+    {
+        $cantBordes = $this->arrCartSetting['bordes']['cant'];
+        $tipoBorde  = $this->arrCartSetting['bordes']['tipo'];
+
+        if( $cantBordes > 0  &&  $tipoBorde != config('ecaptor.border.tipos.termofundido'))
+            return true;
+
+        return false;
+    }
+
+
+
+    private function addToCart(): void 
+    {
+        try {
+            
+            $cart = session()->get('cart');
+
+            if(!Arr::has($cart, $this->arrCartSetting['product']['id']))
+            {
+                $cart = [ $this->arrCartSetting ];
+                session()->put('cart.'.$this->arrCartSetting['product']['id'], $cart);
+                redirect()->route('cart');
+
+            } else {
+
+                dd('Ya xiste el producto en tu carrito');
+            }
+            
+                
+            
+
+           
+
+        } catch (Exception $e) {
+            
+            dd($e->getMessage());
+        }
+    }
 
 
     /**
@@ -294,6 +393,8 @@ class ShoppingAddSteps extends Component
         }
     }
 
+
+    
     /**
      * Validamos la subida del archivo y cambiamos
      * el mensaje cuando esta ok para subirlo

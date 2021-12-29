@@ -24,7 +24,7 @@
                 <div class="stat-desc">21% more than last month</div>
             </div> 
         </div>
-        <div class="w-full shadow stats ">
+        {{-- <div class="w-full shadow stats ">
             <div class="stat">
                 <div class="stat-figure text-info">
                     <div class="avatar online">
@@ -37,6 +37,6 @@
                 <div class="stat-title">Tasks done</div> 
                 <div class="stat-desc text-info">31 tasks remaining</div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>

@@ -63,7 +63,7 @@
 
                 <div class="mt-8 text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
-                    <button type="submit"  class="btn btn-primary w-full">SIGUIENTE</button> 
+                    <button type="submit"  class="btn btn-primary w-full">{{ $buttonName }}</button> 
                 </div>
             </form>
             @endif
@@ -128,7 +128,7 @@
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
-                    <button {{ $buttonStatus }}  type="submit" class="btn btn-primary w-full">SIGUIENTE</button> 
+                    <button {{ $buttonStatus }}  type="submit" class="btn btn-primary w-full">{{ $buttonName }}</button> 
                 </div>
             </form>
             @endif
@@ -144,7 +144,7 @@
                             <div class="w-full h-48 border-gray-400 border">
                                 <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer" id="base">
                                     <div class="text-gray-300 font-bold relative text-center text-4xl">BASE</div>
-                                    <div class="grid grid-cols-{{ count($arrColorBase, 1) }} my-8 gap-x-3 gap-y-2 mx-7 justify-center absolute" id="baseColor">
+                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center absolute" id="baseColor">
                                         @if($arrColorBase)
                                             @foreach($arrColorBase as $i => $name)
                                             
@@ -181,7 +181,7 @@
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
-                    <button  type="submit" class="btn btn-primary w-full">SIGUIENTE</button> 
+                    <button  type="submit" class="btn btn-primary w-full">{{ $buttonName }}</button> 
                 </div>
             </form>
             @endif
@@ -195,8 +195,9 @@
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">
                             <div class="w-full h-48 border-gray-400 border">
-                                <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer" id="base">
-                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center" id="baseColor">
+                                <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer">
+                                    <div class="text-gray-300 font-bold relative text-center text-4xl">LOGO</div>
+                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center absolute" id="baseColor">
                                         @if($arrColorLogo)
                                             @foreach($arrColorLogo as $i => $name)
                                             
@@ -230,7 +231,7 @@
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
-                    <button  type="submit" class="btn btn-primary w-full">SIGUIENTE</button> 
+                    <button  type="submit" class="btn btn-primary w-full">{{ $buttonName }}</button> 
                 </div>
             </form>
             @endif
@@ -245,8 +246,9 @@
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">
                             <div class="w-full h-48 border-gray-400 border">
-                                <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer" id="base">
-                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center" id="baseColor">
+                                <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer">
+                                    <div class="text-gray-300 font-bold relative text-center text-4xl">LETRAS</div>
+                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center absolute" id="baseColor">
                                         @if($arrColorLetras)
                                             @foreach($arrColorLetras as $i => $name)
                                             
@@ -280,7 +282,7 @@
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
-                    <button  type="submit" class="btn btn-primary w-full">SIGUIENTE</button> 
+                    <button  type="submit" class="btn btn-primary w-full">{{ $buttonName }}</button> 
                 </div>
             </form>
             @endif
@@ -290,13 +292,14 @@
             {{-- Setting Colores Bordes --}}
             @if($step == 6)
             <form wire:submit.prevent="cartSetting">
-                <h1 class="text-gray-700 my-5 text-center font-extrabold">SELECCIONAR COLORES DE LETRAS</h1>
+                <h1 class="text-gray-700 my-5 text-center font-extrabold">SELECCIONAR COLORES DEL BORDE</h1>
                 <div class="row">
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">
                             <div class="w-full h-48 border-gray-400 border">
-                                <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer" id="base">
-                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center" id="baseColor">
+                                <div class="grid w-full h-48 bg-gray-100 place-items-center cursor-pointer">
+                                    <div class="text-gray-300 font-bold relative text-center text-4xl">BORDE</div>
+                                    <div class="grid grid-cols-5 my-8 gap-x-3 gap-y-2 mx-7 justify-center absolute" id="baseColor">
                                         @if($arrColorBordes)
                                             @foreach($arrColorBordes as $i => $name)
                                             
@@ -330,7 +333,7 @@
                 </div>
                 <div class="text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
-                    <button  type="submit" class="btn btn-primary w-full">SIGUIENTE</button> 
+                    <button  type="submit" class="btn btn-primary w-full">{{ $buttonName }}</button> 
                 </div>
             </form>
             @endif
@@ -338,3 +341,4 @@
         </div>
     </div>
 </div>
+

@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('Nicolas10'),
                 'profile_id' => 1,
                 'status_id'  => 1,
+                'bussines' => 'MultiApp',
                 'rol_id' => 1,
             ],
         ];
@@ -40,6 +41,7 @@ class UserSeeder extends Seeder
                 'profile_id' => $user['profile_id'],
                 'status_id'  => $user['status_id'],
                 'rol_id'     => $user['rol_id'],
+                'bussines'   => $user['bussines'],
             ]);
         }
 

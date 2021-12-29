@@ -1,5 +1,5 @@
 <div>
-    <div class="card lg:card-side bordered bg-white col-span-3 shadow">
+    <div class="card lg:card-side bordered bg-white col-span-2 shadow">
         <div class="mx-auto my-auto">
             <img src="https://picsum.photos/id/1005/400/250" class="mask mask-circle w-96">
         </div>

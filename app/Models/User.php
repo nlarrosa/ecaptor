@@ -25,6 +25,7 @@ class User extends Authenticatable
         'profile_id',
         'rol_id',
         'status_id',
+        'bussines',
     ];
 
     /**

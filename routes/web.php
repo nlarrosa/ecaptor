@@ -3,6 +3,7 @@
 use App\Http\Livewire\Cart\ShoppingAdd;
 use App\Http\Livewire\Cart\ShoppingCart;
 use App\Http\Livewire\Cart\ShoppingSetting;
+use App\Http\Livewire\Sale\CreateSale;
 use App\Http\Livewire\Home\Dashboard;
 use App\Http\Livewire\Products\Lines;
 use App\Http\Livewire\Products\ProductIndex;
@@ -37,6 +38,10 @@ Route::get('/products/lines', Lines::class)->middleware(['auth'])->name('lines')
 Route::get('/cart', ShoppingCart::class)->middleware(['auth'])->name('cart');
 Route::get('/cart/line/{id}', ShoppingAdd::class)->middleware(['auth'])->name('cart.add');
 Route::get('/cart/setting', ShoppingSetting::class)->middleware(['auth'])->name('cart.setting');
+
+
+/** SALE */
+Route::get('sale/create', CreateSale::class)->middleware(['auth'])->name('sale.create');
 
 
 /** QUOTE */
