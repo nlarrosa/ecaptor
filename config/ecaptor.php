@@ -18,11 +18,56 @@ return [
         ]
     ],
 
+
     'saleStatus' => [
         'nuevo'       => '1',
         'preparacion' => '2',
         'produccion'  => '3',
         'finalizado'  => '4',
         'anulado'     => '5',
+    ],
+
+
+    'sketchStatus' => [
+
+        'status' => [
+            'sinenviar' => 'SIN ENVIAR',
+            'enviado'   => 'ENVIADO',
+            'aprobado'  => 'APROBADO',
+            'modificar' => 'MODIFICAR',
+            'anulado'   => 'ANULADO',
+        ],
+
+        'id' => [
+            'sinenviar' => 1,
+            'enviado'   => 2,
+            'aprobado'  => 3,
+            'modificar' => 4,
+            'anulado'   => 5,
+        ]
+    ],
+
+
+    'tapetes' => [
+        'formato' => [
+            'apaisado' => 'APAISADO',
+            'camino'   => 'CAMINO',
+            'redondo'  => 'REDONDO',
+        ]
+    ],
+
+
+    'design' => [
+        'type' => [
+            'archivo' => 'ARCHIVO',
+            'texto'   => 'TEXTO',
+        ]
+    ],
+
+    'product' => [
+        'type' => [
+            'estandar' => 2,
+            'medida'   => 1,
+        ]
     ],
 ];

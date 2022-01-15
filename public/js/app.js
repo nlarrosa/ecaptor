@@ -4029,8 +4029,9 @@ __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
 
 
+/** SWETALERT */
 
-window.successAlert = function (icon, title) {
+window.AlertTimer = function (icon, title) {
   sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
     position: 'center',
     icon: icon,

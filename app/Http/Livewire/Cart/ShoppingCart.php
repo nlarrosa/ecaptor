@@ -3,8 +3,11 @@
 namespace App\Http\Livewire\Cart;
 
 use App\Models\Sale;
+use App\Models\SaleBorderProducts;
 use App\Models\SaleColorProducts;
+use App\Models\SaleDesignProducts;
 use App\Models\SaleProduct;
+use Exception;
 use Livewire\Component;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +26,10 @@ class ShoppingCart extends Component
 
 
 
+
     public function mount()
     {
+        // session()->forget('cart');
         (session()->get('cart')) 
         ? $this->cart = session()->get('cart')
         : $this->cart = [];
@@ -39,7 +44,7 @@ class ShoppingCart extends Component
      * Sumando los items agregadios al carrito
      * 
      */
-    private function generateTotalCart(): void
+    public function generateTotalCart(): void
     {
         $this->subtotal = 0;
         $this->totalBordes = 0;
@@ -51,7 +56,7 @@ class ShoppingCart extends Component
             $this->subtotal = $data[0]['product']['priceTotal'] + $this->subtotal;
             $this->subtotal = round($this->subtotal, 2, PHP_ROUND_HALF_UP);
 
-            $this->totalBordes = $data[0]['bordes']['precio'] + $this->totalBordes;
+            $this->totalBordes = $data[0]['bordes']['totalPrice'] + $this->totalBordes;
             $this->totalBordes = round($this->totalBordes, 2, PHP_ROUND_HALF_UP);
         }
 
@@ -85,48 +90,79 @@ class ShoppingCart extends Component
 
     public function createSale()
     {
-        $userId = Auth::user()->id;
-        $sales = session()->get('cart');
-
-        // dd($sales);  
-
-        foreach($sales as $productId => $sale)
+        try 
         {
+            $userId = Auth::user()->id;
+            $sales = session()->get('cart');
 
-            $saleId = Sale:: create([
-                'user_id' => $userId,
-                'sale_status_id' => config('ecaptor.saleStatus.nuevo'),
-            ]);
+            // dd($sales);  
 
-
-            $saleProduct = SaleProduct::create([
-                'sale_id'     => $saleId->id,
-                'product_id'  =>  $sale[0]['product']['id'],
-                'quantity'    => $sale[0]['cantidad'],
-                'unit_price'  => $sale[0]['product']['price'],
-                'total_price' => $sale[0]['product']['priceTotal'],
-            ]);
-
-            foreach($sale[0]['color'] as $sector => $colores)
+            foreach($sales as $productId => $sale)
             {
-                foreach($colores as $colorId => $color)
+
+                /** Creamos la venta */
+                $saleId = Sale:: create([
+                    'user_id' => $userId,
+                    'sale_status_id' => config('ecaptor.saleStatus.nuevo'),
+                ]);
+
+
+                /** Guardamos los items de los productos de la venta */
+                $saleProduct = SaleProduct::create([
+                    'sale_id'     => $saleId->id,
+                    'product_id'  => $sale[0]['product']['id'],
+                    'quantity'    => $sale[0]['cantidad'],
+                    'unit_price'  => $sale[0]['product']['price'],
+                    'total_price' => $sale[0]['product']['priceTotal'],
+                    'format'      => $sale[0]['formato'],
+                ]);
+
+
+                /** Guardamos los colores del producto */
+                foreach($sale[0]['color'] as $sector => $colores)
                 {
-                    SaleColorProducts::create([
-                        'sale_product_id' => $saleProduct->id,
-                        'color_id' => $colorId,
-                        'sector' => $sector,
-                    ]);
+                    foreach($colores as $colorId => $color)
+                    {
+                        SaleColorProducts::create([
+                            'sale_product_id' => $saleProduct->id,
+                            'color_id' => $colorId,
+                            'sector' => $sector,
+                        ]);
+                    }
                 }
+
+                /** Guardamos los datos de bordes del producto */
+                $border = SaleBorderProducts::create([
+                    'quantity'        => $sale[0]['bordes']['cant'],
+                    'lados'           => $sale[0]['bordes']['lados'],
+                    'type'            => $sale[0]['bordes']['tipo'],
+                    'unite_price'     => $sale[0]['bordes']['unitePrice'],
+                    'total_price'     => $sale[0]['bordes']['totalPrice'],
+                    'mts_lineal'      => $sale[0]['bordes']['mts'],
+                    'sale_product_id' => $saleProduct->id,
+                ]);
+
+
+                /** Guradmos los datos del diseño */
+                SaleDesignProducts::create([
+                    'type' => $sale[0]['design']['type'],
+                    'design_content' => $sale[0]['design']['content'],
+                    'sale_product_id' => $saleProduct->id,
+                    'status_sketch_id' => config('ecaptor.sketchStatus.id.sinenviar'),
+                ]);
             }
+
+
+            session()->forget('cart');
+
+            $this->dispatchBrowserEvent('ModalAlertTimer', [
+                'icon'  => 'success',
+                'title' => 'Se Envio Su Pedido!',
+            ]);
+
+        } catch (Exception $e) {
+            dd($e->getMessage());
         }
-
-        
-        session()->forget('cart');
-
-        $this->dispatchBrowserEvent('ModalAlert', [
-            'icon'  => 'success',
-            'title' => 'Su Pedido se Envio Correctamente',
-        ]);
     }
 
 

@@ -15,6 +15,7 @@ class ShoppingAdd extends Component
     public  $lineId;
     public  $searchWidth;  
     public  $searchHeight; 
+    public  $customProduct;
 
     /** CART */
     public $cantidad;
@@ -26,8 +27,8 @@ class ShoppingAdd extends Component
         $this->lineId = $id;
         $this->searchWidth = '';
         $this->searchHeight = '';
-
         $this->cantidad = [];
+        $this->customProduct = Product::getProductCustomizeByLineId($this->lineId);
     }
     
     
@@ -36,6 +37,7 @@ class ShoppingAdd extends Component
     {
         return Product::query()
         ->where('line_id', $this->lineId)
+        ->where('type_product_id', config('ecaptor.product.type.estandar'))
 
         ->when($this->searchWidth, function($q){
             $q->where('width', 'LIKE', '%'.$this->searchWidth.'%');
@@ -53,6 +55,8 @@ class ShoppingAdd extends Component
     {
         $this->dispatchBrowserEvent('cartStepsModal', ['productId' => $productId]);
     }
+
+
 
     public function resetSearch(): void
     {

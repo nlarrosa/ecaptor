@@ -16,8 +16,6 @@ class CreateBordersTable extends Migration
         Schema::create('borders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('width');
-            $table->integer('height');
             $table->float('price');
             $table->timestamps();
         });

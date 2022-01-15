@@ -29,6 +29,7 @@ class ProductFactory extends Factory
             'width' => $this->faker->numberBetween(60, 250),
             'height' => $this->faker->numberBetween(60, 250),
             'price' => $this->faker->randomFloat(2, 40, 99),
+            'price_suggest' => $this->faker->randomFloat(2, 40, 99),
             'details' => $this->faker->sentence(15),
             'stock' => true,
             'line_id' => Line::all()->random()->id,

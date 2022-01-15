@@ -18,6 +18,7 @@ class ShoppingAddSteps extends Component
 
     public  $modalOpen;
     public  $cantidad;
+    public  $formato;
     public  $productId;
     public  $product;
     public  $border;
@@ -35,7 +36,9 @@ class ShoppingAddSteps extends Component
     public  $sector;
     public  $logo;
     public  $arrColors;
-    public $arrCart;
+    public  $arrCart;
+    public  $customProduct;
+    public  $arrFormato;
 
 
     public   $arrColorBase;
@@ -70,8 +73,10 @@ class ShoppingAddSteps extends Component
 
     public function mount()
     {
+        
         $this->modalOpen    = '';
         $this->cantidad     = 1;
+        $this->formato      = 'APAISADO';
         $this->border       = 0;
         $this->borderLados  = '';
         $this->borderType   = '';
@@ -93,6 +98,7 @@ class ShoppingAddSteps extends Component
         $this->arrColorsBordes = [];
         $this->arrColors       = Color::all();
         $this->arrCart         = [];
+
     }
     
     
@@ -106,7 +112,13 @@ class ShoppingAddSteps extends Component
         $this->modalOpen = 'modal-open';
         $this->productId = $productId;
         $this->product   = Product::findOrFail($productId);
+
+        // dd($this->product);
+
+        if($this->product->type_product_id == config('ecaptor.product.type.medida'))
+        dd('producto a medida');
     }
+
 
 
 
@@ -115,26 +127,30 @@ class ShoppingAddSteps extends Component
         switch ($this->step) {
 
             case '1':
-                $this->borderSetting();
+                $this->cantidadSetting();
             break;
 
             case '2':
-                $this->designSetting();
+                $this->borderSetting();
             break;
 
             case '3':
-                $this->colorBaseSetting();
+                $this->designSetting();
             break;
 
             case '4':
-                $this->colorLogoSetting();
+                $this->colorBaseSetting();
             break;
 
             case '5':
-                $this->colorLetrasSetting();
+                $this->colorLogoSetting();
             break;
 
             case '6':
+                $this->colorLetrasSetting();
+            break;
+
+            case '7':
                 $this->colorBordesSetting();
             break;
         }
@@ -143,23 +159,48 @@ class ShoppingAddSteps extends Component
 
     /**
      * Agrega al array de carrito los datos seleccionados
-     * referido a los bordes yla cantidad
+     * referido al producto yla cantidad
      */
-    public function borderSetting(): void
+    public function cantidadSetting(): void
     {
-
-        $this->validateBorderSetting();
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',     $this->cantidad);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'formato',      $this->formato);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.id',     $this->productId);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.name',   $this->product->name);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.width',  $this->product->width);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.height', $this->product->height);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.price',  $this->product->price);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.priceTotal',  ($this->product->price * $this->cantidad));
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',     $this->cantidad);
+        $this->step = $this->step + 1;
+    }
+
+
+    /**
+     * Agrega al array de carrito los datos seleccionados
+     * referido a los bordes
+     */
+    public function borderSetting(): void
+    {
+
+        $this->validateBorderSetting();
+
+        $borderPrice = Border::getBorderPriceByMtsLineal([
+            'borderType' => $this->borderType,
+            'borderCant' => $this->border,
+            'ubicacion'  => $this->borderLados,
+            'width'      => $this->product->width,
+            'height'     => $this->product->height,
+        ]);
+        
+
+
+        
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.cant',  $this->border);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.lados', $this->borderLados);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.tipo',  $this->borderType);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.precio',  ($this->border * 1.5));
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.unitePrice',  $borderPrice['unitePrice']);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.totalPrice',  $borderPrice['totalPrice']);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.mts',         $borderPrice['mts']);
         // dd($this->arrCartSetting);
         
         $this->buttonStatus = 'disabled';
@@ -201,7 +242,8 @@ class ShoppingAddSteps extends Component
             $extension = $this->logo->getClientOriginalExtension();
             $this->logo->storeAs('/logos', $fileName, 'public');
             Storage::disk('local')->delete('/livewire-temp/'.$this->logo->getFilename());
-            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.filename',  $fileName);
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.content',  $fileName);
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.type',  config('ecaptor.design.type.archivo'));
 
         }else{
 
@@ -209,8 +251,9 @@ class ShoppingAddSteps extends Component
                 'textLogo' => 'required|min:2',
             ]);
 
-            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.textlogo',  $this->textLogo);
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.content',   $this->textLogo);
             $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.comment',   $this->comentLogo);
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.type',  config('ecaptor.design.type.texto'));
         }
         
         // dd($this->arrCartSetting);
@@ -485,6 +528,8 @@ class ShoppingAddSteps extends Component
             $this->deleteTemporalLogo();
         }
     }
+
+    
 
 
 

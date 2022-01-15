@@ -59,9 +59,9 @@
                             </td>
                             <td>
                                 <div class="text-gray-5 text-sm"> cant. {{ $data[0]['bordes']['cant']  }}</div>
-                                <div class="font-semibold text-md">$ {{ $data[0]['bordes']['precio']  }}</div>
+                                <div class="font-semibold text-md">$ {{ $data[0]['bordes']['totalPrice']  }}</div>
                             </td>
-                            <td><div class="font-semibold text-md">$ {{ $data[0]['product']['priceTotal'] + $data[0]['bordes']['precio']  }}</div></td>
+                            <td><div class="font-semibold text-md">$ {{ $data[0]['product']['priceTotal'] + $data[0]['bordes']['totalPrice']  }}</div></td>
                             <td>
                                 <button wire:click="deleteItemCart('{{ $productId }}')">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

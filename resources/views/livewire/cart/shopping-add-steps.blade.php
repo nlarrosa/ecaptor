@@ -1,15 +1,59 @@
 <div>
     <div id="my-modal" class="modal {{ $modalOpen }}">
-        <div class="modal-box">
+        <div class="modal-box px-10">
+
+            <h1 class="text-gray-900 my-5 text-center font-extrabold text-xl">AGREGAR PRODUCTO</h1>
+            {{-- Setting Cantidad --}}
+            @if($step == 1)
+            <form wire:submit.prevent="cartSetting">
+                <div class="form-control grid grid-cols-1 w-full">
+                    <label class="label"><span class="label-text font-semibold">Cantidad</span></label>
+                    <input wire:model="cantidad" type="number" min="1" max="500" value="1" class="input input-primary">
+                </div>
+
+                <div class="text-center grid grid-cols-1 w-full my-4">
+                    <label class="label"><span class="label-text font-semibold">Formato</span></label>
+                    <select wire:model="formato" class="select select-bordered  text-gray-500">
+                        <option value="APAISADO">APAISADO</option> 
+                        <option value="CAMINO">CAMINO</option> 
+                        <option value="CIRCULO">CIRCULAR</option> 
+                        <option value="ASIMETRICO">ASIMETRICO</option> 
+                    </select>
+                </div>
+                
+                <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-semibold">Ancho  - (Izquierda)</span></label> 
+                        <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-semibold">Alto  - (Cabecera)</span></label>
+                        <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                    </div>
+                </div>
+                <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-semibold">Ancho  - (Derecha)</span></label>
+                        <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-semibold">Alto  - (Pie)</span></label>
+                        <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center grid grid-cols-2 gap-4">
+                    <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 
+                    <button type="submit"  class="btn btn-primary w-full">{{ $buttonName }}</button> 
+                </div>
+            </form>
+            @endif
+            {{-- End Setting Cantidad --}}
 
             {{-- Setting Bordes --}}
+            @if($step == 2)
+            <h1 class="divider text-gray-400 mb-12 text-center font-semibold">BORDES DEL TAPETE</h1>
             <form wire:submit.prevent="cartSetting">
-                @if($step == 1)
-                <h1 class="text-gray-700 my-5 text-center font-extrabold text-xl">SELECCIONAR CANTIDAD TAPETES</h1>
-                <div class="form-control">
-                    <input wire:model="cantidad" type="number" min="1" max="500" value="1" class="input input-primary input- mx-20 my-3">
-                </div> 
-                <div class="divider text-gray-700 my-8 text-center font-extrabold">TAPETES CON BORDES</div>
                 <div class="grid grid-cols-2 gap-6">
                     <div class="avatar  my-auto">
                         <div class="w-48 h-48 ">
@@ -20,6 +64,7 @@
                     </div>
                     <div class="my-auto">
                         <div class="form-control ">
+                            <label class="label"><span class="label-text font-semibold">Tapetes con Borde</span></label>
                             <select wire:model="border" class="select select-bordered  text-gray-500">
                                 <option value="">NINGUNO</option>
                                 @for($i = 1; $i <= $cantidad; $i++) 
@@ -70,9 +115,9 @@
             {{-- End Setting Bordes --}}
 
             {{-- Setting Logo --}}
-            @if($step == 2)
+            @if($step == 3)
+            <h1 class="divider text-gray-400 mb-12 text-center font-semibold">ARCHIVO O DISEÑO DE TEXTO</h1>
             <form wire:submit.prevent="cartSetting">
-                <h1 class="text-gray-700 my-5 text-center text-xl font-extrabold">SUBIR ARCHIVO / DISEÑO</h1>
                 <select wire:model="typeLogo" class="select select-bordered w-full mb-5">
                     <option value="File" >Subir Archivo</option> 
                     <option value="Texto">Diseño de Texto</option> 
@@ -135,9 +180,9 @@
             {{-- End Setting Logo --}}
 
             {{-- Setting Colores Base --}}
-            @if($step == 3)
+            @if($step == 4)
             <form wire:submit.prevent="cartSetting">
-                <h1 class="text-gray-700 my-5 text-center font-extrabold">SELECCIONAR COLORES DE LA BASE</h1>
+                <h1 class="divider text-gray-400 mb-12 text-center font-semibold">COLOR DE LA BASE</h1>
                 <div class="row">
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">
@@ -188,9 +233,9 @@
             {{-- End Setting Colores base --}}
 
             {{-- Setting Colores Logo --}}
-            @if($step == 4)
+            @if($step == 5)
             <form wire:submit.prevent="cartSetting">
-                <h1 class="text-gray-700 my-5 text-center font-extrabold">SELECCIONAR COLORES DEL LOGO</h1>
+                <h1 class="divider text-gray-400 mb-12 text-center font-semibold">COLORES DEL LOGO</h1>
                 <div class="row">
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">
@@ -239,9 +284,9 @@
 
 
             {{-- Setting Colores Letras --}}
-            @if($step == 5)
+            @if($step == 6)
             <form wire:submit.prevent="cartSetting">
-                <h1 class="text-gray-700 my-5 text-center font-extrabold">SELECCIONAR COLORES DE LETRAS</h1>
+                <h1 class="divider text-gray-400 mb-12 text-center font-semibold">COLORES DE LAS LETRAS</h1>
                 <div class="row">
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">
@@ -290,9 +335,9 @@
 
 
             {{-- Setting Colores Bordes --}}
-            @if($step == 6)
+            @if($step == 7)
             <form wire:submit.prevent="cartSetting">
-                <h1 class="text-gray-700 my-5 text-center font-extrabold">SELECCIONAR COLORES DEL BORDE</h1>
+                <h1 class="divider text-gray-400 mb-12 text-center font-semibold">COLORES DEL BORDE</h1>
                 <div class="row">
                     <div class="grid grid-cols-1">
                         <div class="avatar my-auto">

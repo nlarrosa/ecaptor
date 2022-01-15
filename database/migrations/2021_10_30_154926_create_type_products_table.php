@@ -15,7 +15,7 @@ class CreateTypeProductsTable extends Migration
     {
         Schema::create('type_products', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['Standar', 'Medida']);
+            $table->enum('type', ['Estandar', 'Medida']);
             $table->timestamps();
         });
     }

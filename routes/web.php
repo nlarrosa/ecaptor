@@ -6,7 +6,7 @@ use App\Http\Livewire\Cart\ShoppingSetting;
 use App\Http\Livewire\Sale\CreateSale;
 use App\Http\Livewire\Home\Dashboard;
 use App\Http\Livewire\Products\Lines;
-use App\Http\Livewire\Products\ProductIndex;
+use App\Http\Livewire\Products\UploadProduct;
 use App\Http\Livewire\Profile\Setting;
 use App\Http\Livewire\Quote\QuoteOnline;
 use App\Http\Livewire\Sketch\Confirm;
@@ -32,6 +32,7 @@ Route::get('/dashboard', Dashboard::class)->middleware(['auth'])->name('dashboar
 
 /** PRODUCTS */
 Route::get('/products/lines', Lines::class)->middleware(['auth'])->name('lines');
+Route::get('/products/upload', UploadProduct::class)->middleware(['auth'])->name('product.upload');
 
 
 /** CART */

@@ -18,7 +18,17 @@
                             </div>
                         </div>
                     <div class="divider opacity-20"></div> 
-                    
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-8">
+                            <div class="form-control w-full">
+                                <select class="select select-bordered w-full text-gray-500">
+                                    <option disabled="disabled" selected="selected">Tipo de Tapete</option> 
+                                    <option>APAISADP</option> 
+                                    <option>CAMINO</option> 
+                                    <option>REDONDO</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="grid grid-cols-2 gap-4 mt-8">
                             <div class="form-control">
                                 <label class="label">
@@ -93,7 +103,7 @@
             {{-- Fin Cotizador --}}
             
             {{-- RESULTADO --}}
-            <div class="col-span-2 col-start-4 ">
+            {{-- <div class="col-span-2 col-start-4 ">
                 <div class="card shadow-sm bg-gray-300">
                     <div class="card-body">
                         <div class="text-lg text-gray-900 font-bold text-center"> ¡TU COTIZACION!</div>
@@ -128,7 +138,7 @@
                         <button class="btn btn-neutral p-2 bg-primary mx-10 mt-8 hover:bg-primary-focus">HACER PEDIDO</button>
                     </div>
                 </div> 
-            </div>
+            </div> --}}
             {{-- Fin Resultado --}}
         </div>
     </div>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinesTable extends Migration
+class CreateSaleDesignProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateLinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lines', function (Blueprint $table) {
+        Schema::create('sale_design_products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('type');
-            $table->text('details');
-            $table->string('image_line');
+            $table->longText('design_content');
+            $table->string('sketch')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateLinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lines');
+        Schema::dropIfExists('sale_design_products');
     }
 }

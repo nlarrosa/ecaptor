@@ -45,10 +45,10 @@
         <script>
            
 
-            window.addEventListener('ModalAlert', event => {
+            window.addEventListener('ModalAlertTimer', event => {
                 const icon  = event.detail.icon;
                 const title = event.detail.title;
-                successAlert(icon, title);
+                AlertTimer(icon, title);
             })
 
         </script>

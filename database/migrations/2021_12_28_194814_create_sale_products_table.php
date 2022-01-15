@@ -18,6 +18,7 @@ class CreateSaleProductsTable extends Migration
             $table->integer('quantity');
             $table->float('unit_price', 5);
             $table->float('total_price', 5);
+            $table->string('format');
             $table->timestamps();
         });
     }

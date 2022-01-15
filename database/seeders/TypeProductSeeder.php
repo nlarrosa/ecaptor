@@ -14,6 +14,16 @@ class TypeProductSeeder extends Seeder
      */
     public function run()
     {
-        TypeProduct::factory(2)->create();
+        $arrTypeProduct = [
+            [ 'type' => 'Medida'],
+            [ 'type' => 'Estandar'],
+        ];
+
+        foreach($arrTypeProduct as $type)
+        {
+            TypeProduct::create([
+                'type' => $type['type']
+            ]);
+        }
     }
 }

@@ -4,7 +4,9 @@ require('alpinejs');
 /** Sweet Alert 2*/
 import Swal from "sweetalert2";
 
-window.successAlert = function (icon, title){
+/** SWETALERT */
+
+window.AlertTimer = function (icon, title){
 
     Swal.fire({
         position: 'center',
@@ -13,5 +15,4 @@ window.successAlert = function (icon, title){
         showConfirmButton: false,
         timer: 3000
     });
-
 }
