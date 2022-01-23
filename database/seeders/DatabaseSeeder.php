@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductStatusSeeder::class);
         $this->call(BorderSeeder::class);
         $this->call(StatusSketchSeeder::class);
+        $this->call(ProductFormatSeeder::class);
 
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Cart;
 use App\Models\Border;
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\ProductFormat;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -39,6 +40,7 @@ class ShoppingAddSteps extends Component
     public  $arrCart;
     public  $customProduct;
     public  $arrFormato;
+    public  $typeProduct;
 
 
     public   $arrColorBase;
@@ -98,7 +100,6 @@ class ShoppingAddSteps extends Component
         $this->arrColorsBordes = [];
         $this->arrColors       = Color::all();
         $this->arrCart         = [];
-
     }
     
     
@@ -112,11 +113,16 @@ class ShoppingAddSteps extends Component
         $this->modalOpen = 'modal-open';
         $this->productId = $productId;
         $this->product   = Product::findOrFail($productId);
+        $this->typeProduct = $this->product->type_product_id;
 
-        // dd($this->product);
-
-        if($this->product->type_product_id == config('ecaptor.product.type.medida'))
-        dd('producto a medida');
+        if($this->typeProduct == config('ecaptor.product.type.medida'))
+        {
+            $this->arrFormato = ProductFormat::all();
+        }
+        else 
+        {
+            $this->arrFormato = ProductFormat::getByTypeProductId(config('ecaptor.product.type.estandar'));
+        }
     }
 
 

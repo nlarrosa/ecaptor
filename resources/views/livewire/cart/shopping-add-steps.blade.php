@@ -14,33 +14,36 @@
                 <div class="text-center grid grid-cols-1 w-full my-4">
                     <label class="label"><span class="label-text font-semibold">Formato</span></label>
                     <select wire:model="formato" class="select select-bordered  text-gray-500">
-                        <option value="APAISADO">APAISADO</option> 
-                        <option value="CAMINO">CAMINO</option> 
-                        <option value="CIRCULO">CIRCULAR</option> 
-                        <option value="ASIMETRICO">ASIMETRICO</option> 
+                        @if($arrFormato)
+                            @foreach($arrFormato as $format)
+                            <option value="{{ $format->type }}">{{ $format->type }}</option> 
+                            @endforeach
+                        @endIf
                     </select>
                 </div>
                 
-                <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
-                    <div class="form-control">
-                        <label class="label"><span class="label-text font-semibold">Ancho  - (Izquierda)</span></label> 
-                        <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+                @if($typeProduct == Config::get('ecaptor.product.type.medida'))
+                    <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-semibold">Ancho  - (Izquierda)</span></label> 
+                            <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-semibold">Alto  - (Cabecera)</span></label>
+                            <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                        </div>
                     </div>
-                    <div class="form-control">
-                        <label class="label"><span class="label-text font-semibold">Alto  - (Cabecera)</span></label>
-                        <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                    <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-semibold">Ancho  - (Derecha)</span></label>
+                            <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-semibold">Alto  - (Pie)</span></label>
+                            <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                        </div>
                     </div>
-                </div>
-                <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
-                    <div class="form-control">
-                        <label class="label"><span class="label-text font-semibold">Ancho  - (Derecha)</span></label>
-                        <input type="text" placeholder="Ancho en cm." class="input input-bordered">
-                    </div>
-                    <div class="form-control">
-                        <label class="label"><span class="label-text font-semibold">Alto  - (Pie)</span></label>
-                        <input type="text" placeholder="Alto en cm." class="input input-bordered">
-                    </div>
-                </div>
+                @endif
                 
                 <div class="mt-8 text-center grid grid-cols-2 gap-4">
                     <button type="button" wire:click="cartReset" class="btn btn-default w-full">CANCELAR</button> 

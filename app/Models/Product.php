@@ -23,6 +23,12 @@ class Product extends Model
     }
 
 
+    public function Line(): BelongsTo
+    {
+        return $this->belongsTo(Line::class);
+    }
+
+
 
     /**  METHODS */ 
     

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinesTable extends Migration
+class CreateProductFormatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateLinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lines', function (Blueprint $table) {
+        Schema::create('product_formats', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('type');
-            $table->string('design');
-            $table->boolean('border_include');
-            $table->text('details');
-            $table->string('image_line');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ class CreateLinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lines');
+        Schema::dropIfExists('product_formats');
     }
 }

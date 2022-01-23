@@ -21,6 +21,7 @@ class ProductUpload extends Model
         'width',
         'height',
         'price',
-        'price_suggest'
+        'price_suggest',
+        'border_include'
     ];
 }

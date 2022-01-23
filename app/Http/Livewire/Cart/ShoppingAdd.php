@@ -28,6 +28,8 @@ class ShoppingAdd extends Component
         $this->searchWidth = '';
         $this->searchHeight = '';
         $this->cantidad = [];
+
+
         $this->customProduct = Product::getProductCustomizeByLineId($this->lineId);
     }
     

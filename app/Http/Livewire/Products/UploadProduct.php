@@ -105,6 +105,8 @@ class UploadProduct extends Component
                 $lineId = Line::create([
                     'name' => $data->name_line,
                     'type' => $data->type_transit,
+                    'design' => $data->name_product,
+                    'border_include' => ($data->border_include == 'NO') ? false : true,
                     'details' => $data->desc_line,
                     'image_line'  => 'img_1',
                     'category_id' => $categoryId->id,
@@ -117,7 +119,7 @@ class UploadProduct extends Component
             $type = TypeProduct::where('type', $data->type_medida)->first();
 
             Product::create([
-                'name' => $data->name_product,
+                'name' => $data->name_line,
                 'width' => $data->width,
                 'height' => $data->height,
                 'price' => $data->price,

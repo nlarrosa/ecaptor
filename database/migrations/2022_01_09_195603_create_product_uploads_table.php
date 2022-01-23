@@ -27,6 +27,7 @@ class CreateProductUploadsTable extends Migration
             $table->integer('height');
             $table->float('price',5);
             $table->float('price_suggest', 5);
+            $table->string('border_include');
             $table->timestamps();
         });
     }

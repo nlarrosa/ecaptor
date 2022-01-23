@@ -16,18 +16,19 @@ class ProductImport implements ToCollection
         foreach($rows as $row)
         {
             ProductUpload::create([
-                'category'      => $row[0],
-                'line'          => $row[1],
-                'name_line'     => $row[2],
-                'desc_line'     => $row[3],
-                'name_product'  => $row[4],
-                'type_transit'  => $row[5],
-                'type_medida'   => $row[6],
-                'desc_product'  => $row[7],
-                'width'         => $row[8],
-                'height'        => $row[9],
-                'price'         => $row[10],
-                'price_suggest' => $row[11],
+                'category'       => $row[0],
+                'line'           => $row[1],
+                'name_line'      => $row[2],
+                'desc_line'      => $row[3],
+                'name_product'   => $row[4],
+                'border_include' => $row[5],
+                'type_transit'   => $row[6],
+                'type_medida'    => $row[7],
+                'desc_product'   => $row[8],
+                'width'          => $row[9],
+                'height'         => $row[10],
+                'price'          => $row[11],
+                'price_suggest'  => $row[12],
             ]);
         }
     }
