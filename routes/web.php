@@ -9,8 +9,18 @@ use App\Http\Livewire\Products\Lines;
 use App\Http\Livewire\Products\UploadProduct;
 use App\Http\Livewire\Profile\Setting;
 use App\Http\Livewire\Quote\QuoteOnline;
+use App\Http\Livewire\Sale\SaleList;
 use App\Http\Livewire\Sketch\Confirm;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +32,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+/** AUTH */
+
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+->middleware('guest')
+->name('login');
+
+
+Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])
+->middleware('auth')
+->name('logout');
 
 
 
@@ -43,6 +65,7 @@ Route::get('/cart/setting', ShoppingSetting::class)->middleware(['auth'])->name(
 
 /** SALE */
 Route::get('sale/create', CreateSale::class)->middleware(['auth'])->name('sale.create');
+Route::get('sale/list', SaleList::class)->middleware(['auth'])->name('sale.list');
 
 
 /** QUOTE */

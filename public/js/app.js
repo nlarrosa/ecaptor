@@ -4041,6 +4041,27 @@ window.AlertTimer = function (icon, title) {
   });
 };
 
+window.AlertTimerRedirect = function (text, title, url) {
+  var timerInterval;
+  sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+    title: title,
+    html: text,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: function didOpen() {
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().showLoading();
+      timerInterval = setInterval(function () {}, 2000);
+    },
+    willClose: function willClose() {
+      clearInterval(timerInterval);
+    }
+  }).then(function (result) {
+    if (result.dismiss === (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().DismissReason.timer)) {
+      window.location = url;
+    }
+  });
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

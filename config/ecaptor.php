@@ -50,9 +50,10 @@ return [
 
     'tapetes' => [
         'formato' => [
-            'apaisado' => 'APAISADO',
-            'camino'   => 'CAMINO',
-            'redondo'  => 'REDONDO',
+            'apaisado'    => 'APAISADO',
+            'camino'      => 'CAMINO',
+            'redondo'     => 'REDONDO',
+            'asimetrico'  => 'ASIMETRICO',
         ]
     ],
 
@@ -61,6 +62,7 @@ return [
         'type' => [
             'archivo' => 'ARCHIVO',
             'texto'   => 'TEXTO',
+            'liso'    => 'LISO',
         ]
     ],
 

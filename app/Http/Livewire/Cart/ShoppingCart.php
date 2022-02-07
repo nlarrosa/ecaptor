@@ -34,6 +34,8 @@ class ShoppingCart extends Component
         ? $this->cart = session()->get('cart')
         : $this->cart = [];
 
+        // dd($this->cart);
+        // session()->forget('cart');
         $this->generateTotalCart();
     }
 
@@ -95,8 +97,7 @@ class ShoppingCart extends Component
             $userId = Auth::user()->id;
             $sales = session()->get('cart');
 
-            // dd($sales);  
-
+            
             foreach($sales as $productId => $sale)
             {
 
@@ -106,7 +107,7 @@ class ShoppingCart extends Component
                     'sale_status_id' => config('ecaptor.saleStatus.nuevo'),
                 ]);
 
-
+                
                 /** Guardamos los items de los productos de la venta */
                 $saleProduct = SaleProduct::create([
                     'sale_id'     => $saleId->id,
@@ -115,6 +116,8 @@ class ShoppingCart extends Component
                     'unit_price'  => $sale[0]['product']['price'],
                     'total_price' => $sale[0]['product']['priceTotal'],
                     'format'      => $sale[0]['formato'],
+                    'width'       => $sale[0]['product']['width'],
+                    'height'      => $sale[0]['product']['height'],
                 ]);
 
 
@@ -143,21 +146,25 @@ class ShoppingCart extends Component
                 ]);
 
 
-                /** Guradmos los datos del diseño */
-                SaleDesignProducts::create([
-                    'type' => $sale[0]['design']['type'],
-                    'design_content' => $sale[0]['design']['content'],
-                    'sale_product_id' => $saleProduct->id,
-                    'status_sketch_id' => config('ecaptor.sketchStatus.id.sinenviar'),
-                ]);
+                /** Guradmos los datos del diseño siempre que sea con logo */
+                if($sale[0]['design']['type'] != config('ecaptor.design.type.liso'))
+                {
+                    SaleDesignProducts::create([
+                        'type' => $sale[0]['design']['type'],
+                        'design_content' => $sale[0]['design']['content'],
+                        'sale_product_id' => $saleProduct->id,
+                        'status_sketch_id' => config('ecaptor.sketchStatus.id.sinenviar'),
+                    ]);
+                }
             }
 
 
             session()->forget('cart');
 
-            $this->dispatchBrowserEvent('ModalAlertTimer', [
-                'icon'  => 'success',
-                'title' => 'Se Envio Su Pedido!',
+            $this->dispatchBrowserEvent('ModalAlertTimerRedirect', [
+                'text'  => '¡Gracias por su Compra!',
+                'title' => 'Pedido Confirmado',
+                'url'   => route('sale.list'),
             ]);
 
         } catch (Exception $e) {

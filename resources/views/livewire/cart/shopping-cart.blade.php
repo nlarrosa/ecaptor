@@ -27,7 +27,7 @@
 
         <div class="grid grid-cols-6 ">
             <div class="grid col-span-4 overflow-x-auto">
-                <table class="table w-full table-zebra rounded-none px-20">
+                <table class="table w-full">
                     <thead>
                         <th class="text-left"></th>
                         <th class="text-left">Precio</th>
@@ -46,9 +46,10 @@
                                         </div>
                                     </div>  --}}
                                     <div>
-                                        <div class="font-bold text-sm opacity-75">{{ strtoupper($data[0]['product']['name'])  }}</div> 
+                                        <div class="font-bold text-sm opacity-75">{{ strtoupper($data[0]['product']['name']) . ' ' .strtoupper($data[0]['product']['design'])   }}</div> 
                                         <div class="text-sm text-primary opacity-90 font-semibold">{{ $data[0]['product']['width'] . ' x ' . $data[0]['product']['height'] }}cm</div>
-                                        <div class="text-sm opacity-50">Transito Pesado</div>
+                                        <div class="text-sm opacity-60">{{ $data[0]['product']['line'] }}</div>
+                                        <div class="text-xs opacity-70 font-semibold">{{ $data[0]['formato']  }}</div>
                                         <div class="text-xs opacity-90 my-2 badge badge-outline {{ ($data[0]['bordes']['tipo']) ? ' badge-accent' : ''}}"> {{ ($data[0]['bordes']['tipo']) ? $data[0]['bordes']['tipo'] :  'SIN BORDE'}}</div>
                                     </div>
                                 </div>

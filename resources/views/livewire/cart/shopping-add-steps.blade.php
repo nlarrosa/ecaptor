@@ -23,26 +23,57 @@
                 </div>
                 
                 @if($typeProduct == Config::get('ecaptor.product.type.medida'))
-                    <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
-                        <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">Ancho  - (Izquierda)</span></label> 
-                            <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+
+                {{-- Formato Apaisado / Camino --}}
+                    @if(($formato == Config::get('ecaptor.tapetes.formato.apaisado')) || ($formato == Config::get('ecaptor.tapetes.formato.camino')))
+                        <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Ancho</span></label> 
+                                <input wire:model="width" type="text" placeholder="Ancho en cm." class="input input-bordered">
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Alto</span></label>
+                                <input wire:model="height" type="text" placeholder="Alto en cm." class="input input-bordered">
+                            </div>
                         </div>
-                        <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">Alto  - (Cabecera)</span></label>
-                            <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                    @endif
+
+                    {{-- Formato Asimetrico --}}
+                    @if(($formato == Config::get('ecaptor.tapetes.formato.asimetrico')))
+                        <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Ancho  - (Izquierda)</span></label> 
+                                <input wire:model="widthLeft" type="text" placeholder="Ancho en cm." class="input input-bordered">
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Ancho  - (Derecha)</span></label>
+                                <input wire:model="widthRight" type="text" placeholder="Ancho en cm." class="input input-bordered">
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
-                        <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">Ancho  - (Derecha)</span></label>
-                            <input type="text" placeholder="Ancho en cm." class="input input-bordered">
+                        <div class="text-center grid grid-cols-2 w-full my-6 gap-5">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Alto  - (Cabecera)</span></label>
+                                <input wire:model="heightHeader" type="text" placeholder="Alto en cm." class="input input-bordered">
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Alto  - (Pie)</span></label>
+                                <input wire:model="heightFoot" type="text" placeholder="Alto en cm." class="input input-bordered">
+                            </div>
                         </div>
-                        <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">Alto  - (Pie)</span></label>
-                            <input type="text" placeholder="Alto en cm." class="input input-bordered">
+                    @endif
+
+                    {{-- Formato Redondo --}}
+                    @if(($formato == Config::get('ecaptor.tapetes.formato.redondo')))
+                        <div class="text-center grid grid-cols-1 w-full my-6 gap-5">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Diametro</span></label>
+                                <input wire:model="diametro" type="text" placeholder="Diametro en cm." class="input input-bordered">
+                            </div>
                         </div>
-                    </div>
+                        @error('diametro') 
+                            @livewire('ui.alert', [ 'message' =>  $message, 'status' => 'error'])
+                        @enderror
+                    @endif
                 @endif
                 
                 <div class="mt-8 text-center grid grid-cols-2 gap-4">
@@ -59,8 +90,8 @@
             <form wire:submit.prevent="cartSetting">
                 <div class="grid grid-cols-2 gap-6">
                     <div class="avatar  my-auto">
-                        <div class="w-48 h-48 ">
-                            <div class="grid w-48 h-48 bg-base-300 mx-auto my-auto place-items-center {{ $borderCss }}">
+                        <div class="w-48 h-48  {{ $borderRounded }} ">
+                            <div class="grid w-48 h-48 bg-base-300 mx-auto my-auto place-items-center {{ $borderCss }} {{ $borderRounded }} ">
                                 {{ (!empty($borderLados) ? $borderLados : 'SIN BORDES') }}
                             </div>
                         </div>

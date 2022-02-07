@@ -55,14 +55,19 @@ class Border extends Model
      */
     public static function getBorderPriceByMtsLineal(array $arrDataBorder): array
     {
+
         $borderType = $arrDataBorder['borderType'];
         $borderCant = $arrDataBorder['borderCant'];
         $ubicacion  = $arrDataBorder['ubicacion'];
         $width      = $arrDataBorder['width'];
         $height     = $arrDataBorder['height'];
-        $formato    = config('ecaptor.tapetes.formato.apaisado');
+        $formato    = $arrDataBorder['formato'];
         $price      = 0;
-        $mtsLineal  = self::getMtsLinealBorderUbicacion($ubicacion, $width, $height, $formato);
+
+        if($formato == config('ecaptor.tapetes.formato.redondo'))
+        $height = $width;
+
+        $mtsLineal  = self::getMtsLinealBorderByUbicacion($ubicacion, $width, $height, $formato);
 
         
         if($borderType != config('ecaptor.border.tipos.antitropiezo'))
@@ -80,7 +85,7 @@ class Border extends Model
 
        return [
            'unitePrice' => $border->price,
-           'totalPrice' => $price,
+           'totalPrice' => round($price, 2),
            'mts' => $mtsLineal,
        ];
     }
@@ -91,16 +96,27 @@ class Border extends Model
      * tapete segin la cantidad de bordes que tenga y 
      * la ubicacion de los lados
      */
-    public static function getMtsLinealBorderUbicacion(string $ubicacion, int $width, int $height, string $formato ): float
+    public static function getMtsLinealBorderByUbicacion(string $ubicacion, int $width, int $height, string $formato ): float
     {
         $mtslLineal = 0;
 
         switch ($ubicacion) 
         {
+
             case config('ecaptor.border.ubicacion.completos'):
-                $mtsLineal = ($width * 2) + ($height * 2);
-                $mtsLineal = $mtsLineal / 100;
+
+                if($formato == config('ecaptor.tapetes.formato.redondo'))
+                {
+                    $mtsLineal = $width / 100;
+
+                } else {
+
+                    $mtsLineal = ($width * 2) + ($height * 2);
+                    $mtsLineal = $mtsLineal / 100;
+                }
             break;
+
+
 
             case config('ecaptor.border.ubicacion.cabecera'):
             case config('ecaptor.border.ubicacion.pie'):
@@ -113,6 +129,8 @@ class Border extends Model
                 
             break;
 
+
+
             case config('ecaptor.border.ubicacion.cabepie'):
 
                 if($formato == config('ecaptor.tapetes.formato.apaisado'))
@@ -121,6 +139,7 @@ class Border extends Model
                 if($formato == config('ecaptor.tapetes.formato.camino'))
                 $mtsLineal = ($height * 2) / 100;
             break;
+
 
             case config('ecaptor.border.ubicacion.izqder'):
 
@@ -131,6 +150,7 @@ class Border extends Model
                 $mtsLineal = ($width * 2) / 100;
             break;
             
+
             default:
                 $mtsLineal = 0;
             break;
@@ -138,4 +158,5 @@ class Border extends Model
 
         return $mtsLineal;
     }
+    
 }

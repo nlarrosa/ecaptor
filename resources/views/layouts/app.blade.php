@@ -49,7 +49,16 @@
                 const icon  = event.detail.icon;
                 const title = event.detail.title;
                 AlertTimer(icon, title);
+            });
+
+
+            window.addEventListener('ModalAlertTimerRedirect', event => {
+                const text  = event.detail.text;
+                const title = event.detail.title;
+                const url   = event.detail.url;
+                AlertTimerRedirect(text, title, url);
             })
+
 
         </script>
     </body>

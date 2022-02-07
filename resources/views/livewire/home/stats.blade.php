@@ -1,6 +1,6 @@
 <div>
     <div class="my-auto">
-        <div class="w-full shadow stats mb-5">
+        <div class="grid grid-cols-3 shadow stats mb-5">
             <div class="stat">
                 <div class="stat-figure text-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">              
@@ -11,8 +11,6 @@
                 <div class="stat-value text-primary">25.6K</div> 
                 <div class="stat-desc">21% more than last month</div>
             </div> 
-        </div>
-        <div class="w-full shadow stats mb-5">
             <div class="stat">
                 <div class="stat-figure text-info">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">                     
@@ -22,9 +20,7 @@
                 <div class="stat-title">Page Views</div> 
                 <div class="stat-value text-info">2.6M</div> 
                 <div class="stat-desc">21% more than last month</div>
-            </div> 
-        </div>
-        {{-- <div class="w-full shadow stats ">
+            </div>
             <div class="stat">
                 <div class="stat-figure text-info">
                     <div class="avatar online">
@@ -37,6 +33,6 @@
                 <div class="stat-title">Tasks done</div> 
                 <div class="stat-desc text-info">31 tasks remaining</div>
             </div>
-        </div> --}}
+        </div>
     </div>
 </div>

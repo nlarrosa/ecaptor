@@ -11,6 +11,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Services\PayUService\Exception;
+use Exception as GlobalException;
 
 class ShoppingAddSteps extends Component
 {
@@ -41,6 +42,16 @@ class ShoppingAddSteps extends Component
     public  $customProduct;
     public  $arrFormato;
     public  $typeProduct;
+    public  $borderInclude;
+    public  $typeDesignLiso;
+    public  $width;
+    public  $height;
+    public  $widthRight;
+    public  $widthLeft;
+    public  $heightHeader;
+    public  $heightFoot;
+    public  $diametro;
+    public  $borderRounded;
 
 
     public   $arrColorBase;
@@ -69,6 +80,7 @@ class ShoppingAddSteps extends Component
         'arrColorLogo.required' => 'Debe Seleccionar al menos un color.',
         'arrColorLetras.required' => 'Debe Seleccionar al menos un color.',
         'arrColorBordes.required' => 'Debe Seleccionar al menos un color.',
+        'diametro.required' => 'Ingrese la Medida del tapete',
     ];
 
 
@@ -100,6 +112,14 @@ class ShoppingAddSteps extends Component
         $this->arrColorsBordes = [];
         $this->arrColors       = Color::all();
         $this->arrCart         = [];
+        $this->width           = '';
+        $this->height          = '';
+        $this->widthRight      = '';
+        $this->widthLeft       = '';
+        $this->heightHeader    = '';
+        $this->heightFoot      = '';
+        $this->borderRounded   = '';
+        
     }
     
     
@@ -110,19 +130,18 @@ class ShoppingAddSteps extends Component
     {
         // session()->forget('cart');
         // dd(session()->get('cart'));
-        $this->modalOpen = 'modal-open';
-        $this->productId = $productId;
-        $this->product   = Product::findOrFail($productId);
-        $this->typeProduct = $this->product->type_product_id;
+        $this->modalOpen      = 'modal-open';
+        $this->productId      = $productId;
+        $this->product        = Product::findOrFail($productId);
+        $this->typeProduct    = $this->product->type_product_id;
+        $this->borderInclude  = $this->product->Line->border_include;
+        $this->typeDesignLiso = ($this->product->Line->design == 'Liso') ? true : false;
+        
 
-        if($this->typeProduct == config('ecaptor.product.type.medida'))
-        {
-            $this->arrFormato = ProductFormat::all();
-        }
-        else 
-        {
-            $this->arrFormato = ProductFormat::getByTypeProductId(config('ecaptor.product.type.estandar'));
-        }
+        ($this->typeProduct == config('ecaptor.product.type.medida'))
+        ? $this->arrFormato = ProductFormat::all()
+        : $this->arrFormato = ProductFormat::getByTypeProductId(config('ecaptor.product.type.estandar'));
+
     }
 
 
@@ -169,68 +188,128 @@ class ShoppingAddSteps extends Component
      */
     public function cantidadSetting(): void
     {
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',     $this->cantidad);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'formato',      $this->formato);
+
+        if(config('ecaptor.product.type.medida') == $this->typeProduct)
+        {
+
+            switch ($this->formato) 
+            {
+    
+                case config('ecaptor.tapetes.formato.redondo'):
+                    
+                    $this->width   = $this->diametro;
+                    $this->height  = $this->diametro;
+                    $mtsCuadrado   = Product::getMtsCuadradoByProduct($this->diametro, $this->diametro);
+                    $price         = Product::getPriceProductByMtsCuadrardo($mtsCuadrado, $this->productId);
+                    $this->borderRounded = 'rounded-full';
+    
+                    $this->validate([
+                        'diametro' => 'required',
+                    ]);
+    
+                break;
+                
+                case config('ecaptor.tapetes.formato.asimetrico'):
+                    dd('asimetrico');
+                break;
+                
+                default:
+                    $mtsCuadrado  = Product::getMtsCuadradoByProduct($this->width, $this->height);
+                    $price        = Product::getPriceProductByMtsCuadrardo($mtsCuadrado, $this->productId);
+                break;
+            }
+
+        } else {
+
+            $this->width  = $this->product->width;
+            $this->height = $this->product->height;
+            $price  = $this->product->price;
+        }
+
+       
+
+
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'cantidad',       $this->cantidad);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'formato',        $this->formato);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.id',     $this->productId);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.design', $this->product->Line->design);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.line',   $this->product->Line->type);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.name',   $this->product->name);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.width',  $this->product->width);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.height', $this->product->height);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.price',  $this->product->price);
-        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.priceTotal',  ($this->product->price * $this->cantidad));
-        $this->step = $this->step + 1;
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.width',  $this->width);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.height', $this->height);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.price',  $price);
+        $this->arrCartSetting = Arr::add($this->arrCartSetting, 'product.priceTotal',  ($price * $this->cantidad));
+
+        
+        if($this->borderInclude)
+        {
+            $this->borderType  = 'TERMOFUNDIDO';
+            $this->border      = $this->cantidad;
+            $this->borderLados = 'COMPLETOS';
+            $this->borderSetting();
+            
+        }
+        
+        $this->step = $this->step + 1; 
     }
 
 
     /**
      * Agrega al array de carrito los datos seleccionados
      * referido a los bordes
+     * En este punto Evaluo si el diseño del tapete
+     * es liso o con logo
      */
     public function borderSetting(): void
     {
 
-        $this->validateBorderSetting();
+        $this->validate([
 
-        $borderPrice = Border::getBorderPriceByMtsLineal([
+            'borderType' => 'required_unless:border,>,0',
+            'borderLados' => 'required_if:borderType,=,ANTITROPIEZO',
+        ]);
+
+        $arrBordes = [
             'borderType' => $this->borderType,
             'borderCant' => $this->border,
             'ubicacion'  => $this->borderLados,
-            'width'      => $this->product->width,
-            'height'     => $this->product->height,
-        ]);
-        
+            'width'      => $this->width,
+            'height'     => $this->height,
+            'formato'    => $this->formato,
+        ];
 
+        $borderPrice = Border::getBorderPriceByMtsLineal($arrBordes);
 
         
+        if($this->border == 0)
+        {
+            $this->borderType  = config('ecaptor.border.tipos.sinborde');
+            $this->borderLados = config('ecaptor.border.tipos.sinborde');
+        }
+
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.cant',  $this->border);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.lados', $this->borderLados);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.tipo',  $this->borderType);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.unitePrice',  $borderPrice['unitePrice']);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.totalPrice',  $borderPrice['totalPrice']);
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'bordes.mts',         $borderPrice['mts']);
-        // dd($this->arrCartSetting);
         
+        if($this->typeDesignLiso)
+        {
+            $this->arrCartSetting = Arr::add($this->arrCartSetting, 'design.type',  config('ecaptor.design.type.liso'));
+            $this->step = $this->step + 2;
+        } else {
+
+            $this->step = $this->step + 1;
+        }
+    
         $this->buttonStatus = 'disabled';
-        $this->step = $this->step + 1;
 
     }
     
 
-
-    /**
-     * Validacion de los campos en el settiing
-     * de bordes
-     */
-    private function validateBorderSetting(): void
-    {
-        $this->validate([
-
-            'borderType' => 'required_unless:border,>,0',
-            'borderLados' => 'required_if:borderType,=,ANTITROPIEZO',
-        ]);
-    }
-
-
     
+
     /**
      * Guardamos el archivo del logo y la data
      * la agregamos en el array
@@ -267,9 +346,12 @@ class ShoppingAddSteps extends Component
     }
 
 
+
+
     /**
      * Agrega al array e cart los valores del 
-     * color de la base de tapete
+     * color de la base de tapete, Considero si es un tapete
+     * liso o con diseño y tambien si tiene el borde incluido
      */
     public function colorBaseSetting(): void
     {
@@ -279,8 +361,30 @@ class ShoppingAddSteps extends Component
 
 
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.base',   $this->arrColorBase);
-        $this->step = $this->step + 1;
+
+        if($this->typeDesignLiso)
+        {
+            if(!$this->borderInclude)
+            {
+                if($this->validateExistBorder())
+                {
+                    $this->step = $this->step + 3;
+
+                } else {
+
+                    $this->addToCart();
+                }
+            } else {
+
+                $this->addToCart();
+            }
+        } else {
+
+            $this->step = $this->step + 1;
+        }
     }
+
+
 
 
     /**
@@ -295,11 +399,18 @@ class ShoppingAddSteps extends Component
 
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.logo',   $this->arrColorLogo);
 
-        if(!$this->validateExistBorder())
-            $this->buttonName = 'AGREGAR AL CARRITO';
+
+        if(!$this->borderInclude)
+        {
+            if(!$this->validateExistBorder())
+                $this->buttonName = 'AGREGAR AL CARRITO';
+        }
         
         $this->step = $this->step + 1;
     }
+
+    
+
 
 
     /**
@@ -314,16 +425,23 @@ class ShoppingAddSteps extends Component
 
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.letras',   $this->arrColorLetras);
 
-        if($this->validateExistBorder())
+        if(!$this->borderInclude)
         {
-            $this->buttonName = 'AGREGAR AL CARRITO';
-            $this->step = $this->step + 1;
-
+            if($this->validateExistBorder())
+            {
+                $this->buttonName = 'AGREGAR AL CARRITO';
+                $this->step = $this->step + 1;
+    
+            } else {
+               
+                $this->addToCart();
+            }
         } else {
-           
             $this->addToCart();
         }
     }
+
+
 
 
     /**
@@ -339,6 +457,8 @@ class ShoppingAddSteps extends Component
         $this->arrCartSetting = Arr::add($this->arrCartSetting, 'color.bordes',   $this->arrColorBordes);
         $this->addToCart();
     }
+
+
 
 
     /**
@@ -359,33 +479,30 @@ class ShoppingAddSteps extends Component
 
 
 
+
     private function addToCart(): void 
     {
+        
+
         try {
             
             $cart = session()->get('cart');
 
-            if(!Arr::has($cart, $this->arrCartSetting['product']['id']))
-            {
-                $cart = [ $this->arrCartSetting ];
-                session()->put('cart.'.$this->arrCartSetting['product']['id'], $cart);
-                redirect()->route('cart');
+            (!empty(session()->get('cart')))
+            ? $idCart = count($cart)
+            : $idCart = 0;
 
-            } else {
+            $cart = [ $this->arrCartSetting ];
+            session()->put('cart.'.$idCart, $cart);
+            redirect()->route('cart');
 
-                dd('Ya xiste el producto en tu carrito');
-            }
-            
-                
-            
-
-           
-
-        } catch (Exception $e) {
+        } catch (GlobalException $e) {
             
             dd($e->getMessage());
         }
     }
+
+
 
 
     /**
@@ -498,6 +615,7 @@ class ShoppingAddSteps extends Component
      */
     public function updatingBorderType($value)
     {
+        
         if($value == 'TERMOFUNDIDO')
         {
             $this->borderLados = 'COMPLETOS';
@@ -562,6 +680,16 @@ class ShoppingAddSteps extends Component
         $this->arrColorLogo  = [];
         $this->arrColorLetras  = [];
         $this->arrColorBordes  = [];
+        $this->width           = '';
+        $this->height          = '';
+        $this->widthRight      = '';
+        $this->widthLeft       = '';
+        $this->heightHeader    = '';
+        $this->heightFoot      = '';
+        $this->borderRounded   = '';
+        $this->formato         = 'APAISADO';
+        $this->diametro        = '';
+
 
     }
 

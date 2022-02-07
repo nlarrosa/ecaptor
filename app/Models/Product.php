@@ -32,12 +32,33 @@ class Product extends Model
 
     /**  METHODS */ 
     
-    public static function getProductCustomizeByLineId(int $lineId): Product
+    public static function getProductCustomizeByLineId(int $lineId): Collection
     {
         $product =  Product::where('line_id', $lineId)
         ->where('type_product_id', config('ecaptor.product.type.medida'))
-        ->first();
+        ->get();
 
         return $product;
+    }
+
+
+    public static function getPriceProductByMtsCuadrardo(float $mtsCuadrado, int $productId): float
+    {
+        $product = Product::findOrFail($productId);
+        $price   = $mtsCuadrado * $product->price;
+
+        return round($price, 2);
+        
+    }
+
+
+
+    public static function getMtsCuadradoByProduct(float $width, float $height): float
+    {
+        $width  = $width / 100;
+        $height = $height / 100;
+        $mtsCuadrado = $width * $height;
+
+        return $mtsCuadrado;
     }
 }

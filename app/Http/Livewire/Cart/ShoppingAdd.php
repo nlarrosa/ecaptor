@@ -29,7 +29,6 @@ class ShoppingAdd extends Component
         $this->searchHeight = '';
         $this->cantidad = [];
 
-
         $this->customProduct = Product::getProductCustomizeByLineId($this->lineId);
     }
     
@@ -37,6 +36,7 @@ class ShoppingAdd extends Component
     
     private function getProductsByLineId(): LengthAwarePaginator
     {
+        
         return Product::query()
         ->where('line_id', $this->lineId)
         ->where('type_product_id', config('ecaptor.product.type.estandar'))
