@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Sketch;
 use App\Models\Sale;
 use App\Models\SaleProduct;
 use App\Models\SaleSketchProducts;
+use App\Notifications\SketchNotification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -71,7 +72,7 @@ class UploadSketch extends Component
 
             if($sketchProduct['statusId'] == 1)
             {
-                SaleSketchProducts::create([
+                $saleSketch = SaleSketchProducts::create([
                     'file_name' => $fileName,
                     'sale_product_id' => $this->saleProductId,
                     'status_sketch_id' => $sketchProduct['statusId'] + 1
@@ -82,7 +83,7 @@ class UploadSketch extends Component
                 $sketchProduct = SaleSketchProducts::findOrFail($this->saleProductId);
                 $sketchProduct->delete();
 
-                SaleSketchProducts::create([
+                $saleSketch = SaleSketchProducts::create([
                     'file_name' => $fileName,
                     'sale_product_id' => $this->saleProductId,
                     'status_sketch_id' => config('ecaptor.sketchStatus.id.enviado')
@@ -91,7 +92,9 @@ class UploadSketch extends Component
         }
         
         $saleProduct = SaleProduct::findOrFail($this->saleProductId);
-        Sale::saleStatusToUpdate($saleProduct->sale_id);
+        $sale = Sale::saleStatusToUpdate($saleProduct->sale_id);
+
+        $sale->User->notify(new SketchNotification($saleSketch));
 
         $this->modalOpen   = '';
         $this->sketchs     = [];
@@ -102,6 +105,8 @@ class UploadSketch extends Component
             'icon'  => 'success',
             'title' => 'La Muestra se Envio Correctamente',
         ]);
+
+        
     }
 
 

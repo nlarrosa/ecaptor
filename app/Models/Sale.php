@@ -36,10 +36,12 @@ class Sale extends Model
 
 
     /** METHODS */
-    public static function saleStatusToUpdate(int $saleId): void
+    public static function saleStatusToUpdate(int $saleId): Sale
     {
         $sale = Sale::findOrfail($saleId);
         $sale->sale_status_id = $sale->sale_status_id  + 1;
         $sale->update();
+
+        return $sale;
     }
 }

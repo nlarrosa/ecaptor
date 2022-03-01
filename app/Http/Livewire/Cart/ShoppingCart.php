@@ -96,7 +96,6 @@ class ShoppingCart extends Component
         {
             $userId = Auth::user()->id;
             $sales = session()->get('cart');
-
             
             foreach($sales as $productId => $sale)
             {
@@ -149,10 +148,15 @@ class ShoppingCart extends Component
                 /** Guradmos los datos del diseño siempre que sea con logo */
                 if($sale[0]['design']['type'] != config('ecaptor.design.type.liso'))
                 {
+                    (!empty( $sale[0]['design']['comment']))
+                    ? $desigComment = $sale[0]['design']['comment']
+                    : $desigComment = '';
+
                     SaleDesignProducts::create([
                         'type' => $sale[0]['design']['type'],
-                        'design_content' => $sale[0]['design']['content'],
-                        'sale_product_id' => $saleProduct->id,
+                        'design_content'   => $sale[0]['design']['content'],
+                        'design_comments'  => $desigComment,
+                        'sale_product_id'  => $saleProduct->id,
                         'status_sketch_id' => config('ecaptor.sketchStatus.id.sinenviar'),
                     ]);
                 }

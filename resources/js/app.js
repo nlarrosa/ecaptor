@@ -41,3 +41,39 @@ window.AlertTimerRedirect = function (text, title, url){
     })
 }
 
+
+window.AlertConfirmCancelSale = function (saleId){
+
+    Swal.fire({
+        title: 'Estas Seguro?',
+        text: "Que deseas eliminar el pedido " + saleId,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Livewire.emit('cancelSale', saleId);
+        }
+    })
+
+}
+
+
+
+window.AlertTimerSketchConfirm = function (icon, title){
+
+    Swal.fire({
+        position: 'center',
+        icon,
+        title,
+        showConfirmButton: true,
+        timer: 3000
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+            Livewire.emitTo('refreshComponent');
+        }
+    });
+}
+

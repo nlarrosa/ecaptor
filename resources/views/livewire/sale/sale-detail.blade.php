@@ -74,7 +74,7 @@
 
             @if(!empty($buttonStatus))
                 <div class="pt-10 text-center w-full">
-                    <button  class="btn btn-lg w-full bg-{{ $buttonStatus['color'] }} hover:bg-{{ $buttonStatus['color'] }} border-0" {{ $buttonStatus['disabled'] }}>
+                    <button wire:click="$emitUp( 'updateStatus', '{{ $saleProduct->Sale->id }}' , '{{ $buttonStatus['action'] }}', '{{ $saleProduct->id }}' )" class="btn btn-lg w-full bg-{{ $buttonStatus['color'] }} hover:bg-{{ $buttonStatus['color'] }} border-0" {{ $buttonStatus['disabled'] }}>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>

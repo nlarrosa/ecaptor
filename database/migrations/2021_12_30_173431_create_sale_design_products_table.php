@@ -17,6 +17,7 @@ class CreateSaleDesignProductsTable extends Migration
             $table->id();
             $table->string('type');
             $table->longText('design_content');
+            $table->longText('design_comments');
             $table->timestamps();
         });
     }

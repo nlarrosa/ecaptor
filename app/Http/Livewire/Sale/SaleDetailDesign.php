@@ -14,6 +14,7 @@ class SaleDetailDesign extends Component
 
     public string $modalOpen;
     public $saleProduct;
+    public string $imgPath;
     public array $arrColorBase;
     public array $arrColorLogo;
     public array $arrColorLetras;
@@ -32,8 +33,9 @@ class SaleDetailDesign extends Component
 
     public function mount()
     {
-        $this->saleProduct    = '';
-        $this->modalOpen      = '';
+        $this->saleProduct = '';
+        $this->modalOpen   = '';
+        $this->imgPath     = '';
     }
         
 
@@ -86,18 +88,27 @@ class SaleDetailDesign extends Component
     {
         try {
 
-            $fileName = 'planilla_pedido_'.$this->saleProduct->id;
+            $fileName = 'planilla_pedido_'.$this->saleProduct->id.'.pdf';
+            $imgBase64 = '';
+
+            if(!empty($this->saleProduct->SaleSketch->file_name))
+            {
+                $this->imgPath = public_path('storage/sketchs/'. $this->saleProduct->SaleSketch->file_name);
+                $imgBase64 = "data:image/png;base64," . base64_encode(file_get_contents($this->imgPath));
+            }
+            
             $data = [
-                'saleProduct'  => $this->saleProduct,
-                'baseColors'   => $this->baseColors,
-                'logoColors'   => $this->logoColors,
-                'letrasColors' => $this->letrasColors,
-                'bordesColors' => $this->bordesColors,
+                'saleProduct'   => $this->saleProduct,
+                'baseColors'    => $this->baseColors,
+                'logoColors'    => $this->logoColors,
+                'letrasColors'  => $this->letrasColors,
+                'bordesColors'  => $this->bordesColors,
+                'imagePath'     => $imgBase64,
             ];
     
             return response()->streamDownload(function () use ($data) {
                 $pdf = App::make('dompdf.wrapper');
-                $pdf->loadView('sale.sale-detail-design', $data);
+                $pdf->loadView('livewire.sale.sale-planilla', $data);
                 echo $pdf->stream();
             }, $fileName);
 

@@ -16,30 +16,33 @@
                                 <div class="text-sm text-gray-400">Aprueba o rechaza la muestra de tu tapete</div>
                             </div>
                             <div class="col-span-2 text-right">
-                                <button class="btn bg-gray-900">
+                                {{-- <button class="btn bg-gray-900">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
                                     </svg>
-                                </button>
+                                </button> --}}
+                                <div class="grid w-32 h-10 rounded bg-{{ $saleSketchStatus['color']}} text-primary-content place-content-center">{{ $saleSketchStatus['status'] }}</div> 
                             </div>
                         </div>
                         <div class="divider opacity-10"></div> 
 
                         <div class="avatar m-2 my-auto">
                             <div class="border border-primary w-full">
-                                <div class="grid w-full h-48 bg-base-300 place-items-center">content</div>
+                                <div class="grid w-full h-full bg-base-300 place-items-center">
+                                    <img src="{{ $imagePath }}" alt="" >
+                                </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 mt-5">
-                            <button class="btn bg-success hover:bg-accent-focus p-3 m-4">APROBAR</button>
-                            <button  class="btn bg-error hover:bg-error p-3 m-4">MODIFICAR</button>
+                            <button wire:click="confirmSketch" class="btn bg-success hover:bg-accent-focus p-3 m-4" {{ $btnDisabledConfirm }}>APROBAR</button>
+                            <button wire:click="rechazarSketch" class="btn bg-error hover:bg-error p-3 m-4" {{ $btnDisabledModify }}>MODIFICAR</button>
                         </div>
                     </div>
                 </div> 
             </div>
         </div>
 
-        <x-modal-sketch-coment />
+        {{-- <x-modal-sketch-coment /> --}}
 
     </div>
 </div>

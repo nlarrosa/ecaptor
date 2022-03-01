@@ -4036,7 +4036,7 @@ window.AlertTimer = function (icon, title) {
     position: 'center',
     icon: icon,
     title: title,
-    showConfirmButton: false,
+    showConfirmButton: true,
     timer: 3000
   });
 };
@@ -4058,6 +4058,36 @@ window.AlertTimerRedirect = function (text, title, url) {
   }).then(function (result) {
     if (result.dismiss === (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().DismissReason.timer)) {
       window.location = url;
+    }
+  });
+};
+
+window.AlertConfirmCancelSale = function (saleId) {
+  sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+    title: 'Estas Seguro?',
+    text: "Que deseas eliminar el pedido " + saleId,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, eliminar!'
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      Livewire.emit('cancelSale', saleId);
+    }
+  });
+};
+
+window.AlertTimerSketchConfirm = function (icon, title) {
+  sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+    position: 'center',
+    icon: icon,
+    title: title,
+    showConfirmButton: true,
+    timer: 3000
+  }).then(function (result) {
+    if (result.dismiss === (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().DismissReason.timer)) {
+      Livewire.emitTo('confirm', 'refreshComponent');
     }
   });
 };

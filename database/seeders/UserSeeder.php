@@ -27,6 +27,16 @@ class UserSeeder extends Seeder
                 'bussines' => 'MultiApp',
                 'rol_id' => 1,
             ],
+            [
+                'name' => 'Natalia',
+                'last_name' => 'Hermida',
+                'email' => 'natalia@grupohermida.com',
+                'password' => Hash::make('Natalia10'),
+                'profile_id' => 1,
+                'status_id'  => 1,
+                'bussines' => 'Grupo Hermida',
+                'rol_id' => 1,
+            ],
         ];
 
         foreach($arrUsers as $user)

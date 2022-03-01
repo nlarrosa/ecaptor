@@ -21,6 +21,8 @@ class SaleList extends Component
 
     protected $listeners = [
         'updateStatusSale' => '$refresh',
+        'updateStatus'     => 'updateSaleStatus',
+        'cancelSale'       => 'cancelSale',
     ];
 
 
@@ -41,17 +43,27 @@ class SaleList extends Component
 
 
 
+
     public function openModalDetailDesign(int $saleProductId)
     {
         $this->dispatchBrowserEvent('openModalSaleDesign', ['saleProductId' => $saleProductId ]);
     }
 
 
+
     public function openModalSketchUpload(int $saleProductId)
     {
         $this->dispatchBrowserEvent('openModalSendSketch', ['saleProductId' => $saleProductId ]);
     }
+    
 
+    
+    public function openModalConfirmCancel(int $saleId)
+    {
+        $this->dispatchBrowserEvent('ModalAlertConfirmCancel', [
+            'saleId'  => $saleId,
+        ]);
+    }
 
 
 
@@ -59,11 +71,8 @@ class SaleList extends Component
     {
 
         $saleProductDesign = SaleDesignProducts::where('sale_product_id', $saleProductId)->first();
+        $this->asignResponsability($saleProductId);
 
-        $saleProduct = SaleProduct::findOrFail($saleProductId);
-        $sale = Sale::findOrFail($saleProduct->sale_id);
-        $sale->responsability = Auth()->user()->name.' '.Auth()->user()->last_name;
-        $sale->update();
 
         if($saleProductDesign->type == config('ecaptor.design.type.texto'))
         {
@@ -88,11 +97,65 @@ class SaleList extends Component
     }
 
 
+
+
+    public function updateSaleStatus(int $saleId, string $action, int $saleProductId)
+    {
+
+        $sale = Sale::findOrFail($saleId);
+        
+        switch ($action) {
+
+            case 'preparacion':
+                $sale->sale_status_id = config('ecaptor.saleStatus.preparacion');
+                $sale->update();
+                $this->asignResponsability($saleProductId);
+                break;
+
+            case 'produccion':
+                $sale->sale_status_id = config('ecaptor.saleStatus.produccion');
+                $sale->update();
+                break;
+
+            case 'finalizar':
+                $sale->sale_status_id = config('ecaptor.saleStatus.finalizado');
+                $sale->update();
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+
+
+    public function asignResponsability(int $saleProductId)
+    {
+        $saleProduct = SaleProduct::findOrFail($saleProductId);
+        $sale = Sale::findOrFail($saleProduct->sale_id);
+        
+        if(empty($sale->responsability))
+        {
+            $sale->responsability = Auth()->user()->name.' '.Auth()->user()->last_name;
+            $sale->update();
+        }
+    }
+
+
+
+    public function cancelSale(int $saleId)
+    {
+        $sale = Sale::findOrFail($saleId);
+        $sale->sale_status_id = config('ecaptor.saleStatus.anulado');
+        $sale->update();
+    }
     
+
+
+
     public function render()
     {
         return view('livewire.sale.sale-list', [
-
             'saleProducts' => SaleProduct::orderBy('sale_id', 'DESC')->paginate($this->registersView),
         ]);
     }

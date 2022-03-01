@@ -49,40 +49,83 @@ class SaleDetail extends Component
     {
         $this->buttonStatus = [];
 
+        /** chequeo primero si es con logo porque el proceso es distinto */
         if($this->saleProduct->Product->Line->design == 'Logo')
         {
             if($this->saleProduct->Sale->sale_status_id != config('ecaptor.saleStatus.nuevo'))
             {
-
+                /** Si no es nuevo y esta enviado la muestra deshabilito los botones */
                 if($this->saleProduct->SaleSketch->status_sketch_id == 2)
                 {
                     $this->buttonStatus = [
-                        'action' => '',
+                        'action' => 'produccion',
                         'title'  => 'Enviar a Produccion',
                         'color'  => 'info',
                         'disabled' => 'disabled',
                     ];
                 }
 
+                /** Si no es nuevo y esta aprobado la muestra habilito y veo los estados  */
                 if($this->saleProduct->SaleSketch->status_sketch_id == 3)
                 {
-                    $this->buttonStatus = [
-                        'action' => '',
-                        'title'  => 'Enviar a Produccion',
-                        'color'  => 'info',
-                        'disabled' => '',
-                    ];
+                    if($this->saleProduct->Sale->sale_status_id == config('ecaptor.saleStatus.preparacion'))
+                    {
+                        $this->buttonStatus = [
+                            'action' => 'produccion',
+                            'title'  => 'Enviar a Produccion',
+                            'color'  => 'info',
+                            'disabled' => '',
+                        ];
+                    }
+
+                    if($this->saleProduct->Sale->sale_status_id == config('ecaptor.saleStatus.produccion'))
+                    {
+                        $this->buttonStatus = [
+                            'action' => 'finalizar',
+                            'title'  => 'Finalizar',
+                            'color'  => 'success',
+                            'disabled' => '',
+                        ];
+                    }
+
+                    if($this->saleProduct->Sale->sale_status_id == config('ecaptor.saleStatus.finalizado'))
+                    {
+                        $this->buttonStatus = [];
+                    }
                 }
             }
 
         } else {
 
-            $this->buttonStatus = [
-                'action' => '',
-                'title'  => 'Enviar a Preparacion',
-                'color'  => 'warning',
-                'disabled' => '',
-            ];
+            if($this->saleProduct->Sale->sale_status_id == config('ecaptor.saleStatus.nuevo'))
+            {
+                $this->buttonStatus = [
+                    'action' => 'preparacion',
+                    'title'  => 'Enviar a Preparacion',
+                    'color'  => 'warning',
+                    'disabled' => '',
+                ];
+            }
+
+            if($this->saleProduct->Sale->sale_status_id == config('ecaptor.saleStatus.preparacion'))
+            {
+                $this->buttonStatus = [
+                    'action' => 'produccion',
+                    'title'  => 'Enviar a Produccion',
+                    'color'  => 'info',
+                    'disabled' => '',
+                ];
+            }
+
+            if($this->saleProduct->Sale->sale_status_id == config('ecaptor.saleStatus.produccion'))
+            {
+                $this->buttonStatus = [
+                    'action' => 'finalizar',
+                    'title'  => 'Finalizar',
+                    'color'  => 'success',
+                    'disabled' => '',
+                ];
+            }
         }
 
     }

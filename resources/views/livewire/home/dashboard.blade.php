@@ -4,14 +4,14 @@
       @livewire('home.stats')
   </div>
   <div class="row mb-7 ">
-    <div class="grid grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6">
       @livewire('home.profile')
-      
     </div>
   </div>
   <div class="row">
     <div class="grid grid-cols-2 gap-6">
       @livewire('home.order-request')
+      @livewire('home.sketch-list')
     </div>
   </div>
 </div>

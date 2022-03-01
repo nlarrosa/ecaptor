@@ -10,7 +10,7 @@ class SaleDesignProducts extends Model
 {
     use HasFactory;
     protected $table = 'sale_design_products';
-    protected $fillable = ['type', 'design_content', 'sale_product_id'];
+    protected $fillable = ['type', 'design_content', 'design_comments', 'sale_product_id'];
 
     /** RELATIONS */
 

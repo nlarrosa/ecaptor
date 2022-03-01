@@ -57,7 +57,20 @@
                 const title = event.detail.title;
                 const url   = event.detail.url;
                 AlertTimerRedirect(text, title, url);
-            })
+            });
+
+
+            window.addEventListener('ModalAlertConfirmCancel', event => {
+                const saleId  = event.detail.saleId;
+                AlertConfirmCancelSale(saleId);
+            });
+
+
+            window.addEventListener('ModalAlertTimerSketch', event => {
+                const icon  = event.detail.icon;
+                const title = event.detail.title;
+                AlertTimerSketchConfirm(icon, title);
+            });
 
 
         </script>

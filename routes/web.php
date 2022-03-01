@@ -72,7 +72,7 @@ Route::get('sale/list', SaleList::class)->middleware(['auth'])->name('sale.list'
 Route::get('/quote/quoteonline', QuoteOnline::class)->middleware(['auth'])->name('quote.online');
 
 /** SKETCHS */
-Route::get('/sketch/confirm', Confirm::class)->middleware(['auth'])->name('sketch.confirm');
+Route::get('/sketch/{id}/confirm/{notifyId}', Confirm::class)->middleware(['auth'])->name('sketch.confirm');
 
 /** PROFILE */
 Route::get('/profile/setting', Setting::class)->middleware(['auth'])->name('profile.setting');
