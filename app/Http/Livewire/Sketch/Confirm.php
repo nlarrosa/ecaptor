@@ -16,6 +16,7 @@ class Confirm extends Component
     public $btnDisabledConfirm;
     public $btnDisabledModify;
     public $saleSketchStatus;
+    public int $saleSketchId;
 
 
     protected $listeners = [
@@ -26,24 +27,25 @@ class Confirm extends Component
 
     public function mount(int $id, string $notifyId)
     {
+        $this->saleSketchId = $id;
         $this->btnDisabledConfirm = '';
         $this->btnDisabledModify  = '';
-        
+        $this->init($this->saleSketchId);
+        $notify =  Auth()->user()->notifications->where('id', $notifyId)->first()->markAsRead();
+    }
+    
+    
+    
+    
+    public function init(int $id)
+    {
         $this->saleSketch = SaleSketchProducts::where('id', $id)->first();
         $this->imagePath  = url('storage/sketchs/'. $this->saleSketch->file_name);
-        $this->statusSketch();
-        
+
         $this->saleSketchStatus = [
             'status' => $this->saleSketch->StatusSketch->name,
             'color'  => $this->saleSketch->StatusSketch->color,
         ];
-        
-        $notify =  Auth()->user()->notifications->where('id', $notifyId)->first()->markAsRead();
-    }
-
-
-    public function statusSketch()
-    {
         
         if($this->saleSketch->status_sketch_id == config('ecaptor.sketchStatus.id.aprobado'))
         {
@@ -51,6 +53,7 @@ class Confirm extends Component
             $this->btnDisabledModify  = 'disabled';
         }
     }
+
 
 
 
@@ -65,8 +68,13 @@ class Confirm extends Component
                 'icon'   => 'success',
                 'title'  => 'Se envio la Aprobacion del Boceto',
             ]);
+
+            $this->btnDisabledConfirm = 'disabled';
+            $this->btnDisabledModify  = 'disabled';
+            $this->init($this->saleSketchId);
         }
     }
+
 
 
 

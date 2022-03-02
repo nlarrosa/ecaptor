@@ -46,6 +46,10 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])
 ->name('logout');
 
 
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('sale/list', SaleList::class)->middleware(['auth'])->name('sale.list');
+});
+
 
 /** HOME */
 Route::get('/', Dashboard::class)->middleware(['auth'])->name('dashboard');
@@ -65,7 +69,6 @@ Route::get('/cart/setting', ShoppingSetting::class)->middleware(['auth'])->name(
 
 /** SALE */
 Route::get('sale/create', CreateSale::class)->middleware(['auth'])->name('sale.create');
-Route::get('sale/list', SaleList::class)->middleware(['auth'])->name('sale.list');
 
 
 /** QUOTE */

@@ -7,6 +7,8 @@ use App\Models\SaleProduct;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Livewire\Component;
+use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
+use PhpParser\Node\Expr\Cast\Bool_;
 
 class SaleDetailDesign extends Component
 {
@@ -15,20 +17,21 @@ class SaleDetailDesign extends Component
     public string $modalOpen;
     public $saleProduct;
     public string $imgPath;
-    public array $arrColorBase;
-    public array $arrColorLogo;
-    public array $arrColorLetras;
-    public array $arrColorBordes;
+    public array  $arrColorBase;
+    public array  $arrColorLogo;
+    public array  $arrColorLetras;
+    public array  $arrColorBordes;
     public string $baseColors;
     public string $logoColors;
     public string $letrasColors;
     public string $bordesColors;
+    public string $sketchStatus;
+    public bool   $buttonStatus;
+
 
     protected $listeners = [
         'openModalDetailDesign' => 'openModalSaleDetailDesign',
     ];
-
-
 
 
     public function mount()
@@ -42,8 +45,21 @@ class SaleDetailDesign extends Component
 
     public function openModalSaleDetailDesign(int $saleProductId): void
     {
-        $this->modalOpen   = 'modal-open';
-        $this->saleProduct = SaleProduct::findOrFail($saleProductId);
+        $this->modalOpen    = 'modal-open';
+        $this->saleProduct  = SaleProduct::findOrFail($saleProductId);
+
+
+        /** Evaluo el estado de la muestra para habilitar
+         * la impresion de la planilla y considero si es
+         * Liso o con Logo
+         */
+        (!empty($this->saleProduct->SaleSketch->StatusSketch->name))
+        ? $this->sketchStatus = $this->saleProduct->SaleSketch->StatusSketch->name
+        : $this->sketchStatus = '';
+        
+        $this->buttonPrintPlanilla();
+        
+  
         $colorProducts = SaleColorProducts::where('sale_product_id', $saleProductId)->get();
         $sector = '';
         $this->arrColorBase   = [];
@@ -116,6 +132,28 @@ class SaleDetailDesign extends Component
         } catch (Exception $e) {
             
             dd($e->getMessage());
+        }
+    }
+
+
+
+    public function buttonPrintPlanilla()
+    {
+        if(!empty($this->saleProduct->SaleDesignProduct->type))
+        {
+            $typeProduct = $this->saleProduct->SaleDesignProduct->type;
+            $this->buttonStatus = false;
+
+            if($typeProduct == config('ecaptor.design.type.archivo'))
+            {
+                return ($this->sketchStatus === config('ecaptor.sketchStatus.id.aprobado'))
+                ? $this->buttonStatus = true
+                : $this->buttonStatus = false;
+
+            } else {
+
+                return $this->buttonStatus = true;
+            }
         }
     }
 

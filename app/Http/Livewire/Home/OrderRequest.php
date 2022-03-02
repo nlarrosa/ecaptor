@@ -17,20 +17,16 @@ class OrderRequest extends Component
     public function mount()
     {
         $this->orders = '';
-        $this->orders = Sale::where('user_id', Auth()->user()->id)
-        ->orderBy('id', 'DESC')
-        ->limit(5)
-        ->get();
+        $this->init();
     }
 
 
     public function init()
     {
-        $this->orders = Sale::where('user_id', Auth()->user()->id)->get();
-        // $this->orders = SaleProduct::with('Sale')
-        // ->whereHas('sale', function($query){
-        //     $query->where('user_id', Auth()->user()->id);
-        // })->get();
+        $this->orders = Sale::where('user_id', Auth()->user()->id)
+        ->orderBy('id', 'DESC')
+        ->limit(5)
+        ->get();
 
     }
 

@@ -1,8 +1,8 @@
 <div>
-  <div class="row mb-7 ">
+  {{-- <div class="row mb-7 ">
     <div class="w-full gap-6">
       @livewire('home.stats')
-  </div>
+  </div> --}}
   <div class="row mb-7 ">
     <div class="grid grid-cols-1 gap-6">
       @livewire('home.profile')

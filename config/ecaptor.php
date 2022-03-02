@@ -2,6 +2,13 @@
 
 return [
 
+    'rol' => [
+        'admin'      => 'ADMIN',
+        'proveedor'  => 'PROV',
+        'cliente'    => 'CLI',
+        'produccion' => 'PROD',
+    ],
+
     'border' => [
         'ubicacion' => [
             'completos' => 'COMPLETOS',
