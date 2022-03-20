@@ -8,34 +8,41 @@
     </div>
     
     <div class="flex items-center">
+        
+        <a href="<?php echo e(url('products/lines')); ?>" class="btn btn-accent btn-sm mr-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Hacer Pedido
+        </a>
 
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('cart.shopping-header')->html();
-} elseif ($_instance->childHasBeenRendered('LV3UIWk')) {
-    $componentId = $_instance->getRenderedChildComponentId('LV3UIWk');
-    $componentTag = $_instance->getRenderedChildComponentTagName('LV3UIWk');
+} elseif ($_instance->childHasBeenRendered('VN0jXtP')) {
+    $componentId = $_instance->getRenderedChildComponentId('VN0jXtP');
+    $componentTag = $_instance->getRenderedChildComponentTagName('VN0jXtP');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('LV3UIWk');
+    $_instance->preserveRenderedChild('VN0jXtP');
 } else {
     $response = \Livewire\Livewire::mount('cart.shopping-header');
     $html = $response->html();
-    $_instance->logRenderedChild('LV3UIWk', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('VN0jXtP', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('notification.header-notification')->html();
-} elseif ($_instance->childHasBeenRendered('sqbY4wA')) {
-    $componentId = $_instance->getRenderedChildComponentId('sqbY4wA');
-    $componentTag = $_instance->getRenderedChildComponentTagName('sqbY4wA');
+} elseif ($_instance->childHasBeenRendered('J6HpXOg')) {
+    $componentId = $_instance->getRenderedChildComponentId('J6HpXOg');
+    $componentTag = $_instance->getRenderedChildComponentTagName('J6HpXOg');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('sqbY4wA');
+    $_instance->preserveRenderedChild('J6HpXOg');
 } else {
     $response = \Livewire\Livewire::mount('notification.header-notification');
     $html = $response->html();
-    $_instance->logRenderedChild('sqbY4wA', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('J6HpXOg', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

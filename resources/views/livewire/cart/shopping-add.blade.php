@@ -50,14 +50,14 @@
                 <tr class="shadow-sm border">
                     <td>
                         <div class="flex items-center space-x-4">
-                            <div class="avatar mx-2">
+                            {{-- <div class="avatar mx-2">
                                 <div class="w-20 h-20 border border-primary">
                                     <div class="grid w-20 h-20 bg-base-300 place-items-center">content</div>
                                 </div>
-                            </div> 
-                            <div>
+                            </div>  --}}
+                            <div class=" ml-10">
                                 <div class="font-bold text-md opacity-75">{{ $product->name }} | {{ $product->Line->design }}</div> 
-                                <div class="text-sm text-primary opacity-90">{{ $product->width }} x {{ $product->height }} cm.</div>
+                                <div class="text-sm text-primary font-bold opacity-90">{{ $product->width }} x {{ $product->height }} cm.</div>
                                 <div class="text-sm opacity-50">{{ ($product->Line->border_include) ? 'Borde Incluido' : '' }}</div>
                             </div>
                         </div>

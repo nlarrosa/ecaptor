@@ -1,5 +1,14 @@
 <div>
-    <div class="grid grid-cols-10 bg-white ">
+    <div class="hero min-h-screen bg-base-200">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">Ya Falta Poco!</h1>
+                <p class="py-6">Estamos actualizando esta seccion para que tengas la mejor herramienta a tu disposicion</p>
+                <button class="btn btn-primary">IR AL DASHBOARD</button>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="grid grid-cols-10 bg-white ">
         <div class="bordered shadow col-span-3">
             <div class="mx-auto my-auto mt-5">
                 <img src="https://picsum.photos/id/1005/400/250" class="mask mask-circle w-76">
@@ -68,5 +77,5 @@
                 <button class="btn bg-primary p-3 float-right w-full"> EDITAR </button>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>

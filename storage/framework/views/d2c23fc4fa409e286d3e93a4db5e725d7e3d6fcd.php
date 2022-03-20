@@ -18,8 +18,8 @@
                     <th>N°</th> 
                     <th>Fecha</th> 
                     <th>Cliente</th> 
-                    <th>Usuario</th>
                     <th>Producto</th>
+                    <th>Medida</th>
                     <th>Importe</th>
                     <th>Responsable</th>
                     <th>Estado</th>
@@ -31,10 +31,10 @@
                 <?php $__currentLoopData = $saleProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $saleProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <th><?php echo e($saleProduct->Sale->id); ?></th> 
-                        <td><div class="text-sm"><?php echo e($saleProduct->Sale->created_at); ?></div></td> 
+                        <td><div class="text-sm"><?php echo e(substr($saleProduct->Sale->created_at, 0, -9)); ?></div></td> 
                         <td><?php echo e($saleProduct->Sale->User->bussines); ?></td> 
-                        <td><?php echo e($saleProduct->Sale->User->name); ?> <?php echo e($saleProduct->Sale->User->last_name); ?></td>
                         <td><?php echo e($saleProduct->Product->Line->name); ?> - <?php echo e($saleProduct->Product->Line->design); ?></td>
+                        <td><?php echo e($saleProduct->Product->width); ?> x <?php echo e($saleProduct->Product->height); ?> cm.</td>
                         <td><div class="font-bold">US$ <?php echo e($saleProduct->total_price + $saleProduct->SaleBorderProduct->total_price); ?></div></td>
                         <td><div class="font-semibold text-gray-400"><?php echo e($saleProduct->Sale->responsability); ?></div></td>
                         <td><div class="badge border-2 border-<?php echo e($saleProduct->Sale->SaleStatus->color); ?> badge-<?php echo e($saleProduct->Sale->SaleStatus->color); ?>"><?php echo e($saleProduct->Sale->SaleStatus->name); ?></div> </td>
@@ -97,45 +97,45 @@
     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('sale.sale-detail')->html();
-} elseif ($_instance->childHasBeenRendered('xW6kjB7')) {
-    $componentId = $_instance->getRenderedChildComponentId('xW6kjB7');
-    $componentTag = $_instance->getRenderedChildComponentTagName('xW6kjB7');
+} elseif ($_instance->childHasBeenRendered('x9rv2kY')) {
+    $componentId = $_instance->getRenderedChildComponentId('x9rv2kY');
+    $componentTag = $_instance->getRenderedChildComponentTagName('x9rv2kY');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('xW6kjB7');
+    $_instance->preserveRenderedChild('x9rv2kY');
 } else {
     $response = \Livewire\Livewire::mount('sale.sale-detail');
     $html = $response->html();
-    $_instance->logRenderedChild('xW6kjB7', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('x9rv2kY', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('sale.sale-detail-design')->html();
-} elseif ($_instance->childHasBeenRendered('69Iz9ju')) {
-    $componentId = $_instance->getRenderedChildComponentId('69Iz9ju');
-    $componentTag = $_instance->getRenderedChildComponentTagName('69Iz9ju');
+} elseif ($_instance->childHasBeenRendered('i9SLWel')) {
+    $componentId = $_instance->getRenderedChildComponentId('i9SLWel');
+    $componentTag = $_instance->getRenderedChildComponentTagName('i9SLWel');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('69Iz9ju');
+    $_instance->preserveRenderedChild('i9SLWel');
 } else {
     $response = \Livewire\Livewire::mount('sale.sale-detail-design');
     $html = $response->html();
-    $_instance->logRenderedChild('69Iz9ju', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('i9SLWel', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('sketch.upload-sketch')->html();
-} elseif ($_instance->childHasBeenRendered('MRe2qiv')) {
-    $componentId = $_instance->getRenderedChildComponentId('MRe2qiv');
-    $componentTag = $_instance->getRenderedChildComponentTagName('MRe2qiv');
+} elseif ($_instance->childHasBeenRendered('uJrF91D')) {
+    $componentId = $_instance->getRenderedChildComponentId('uJrF91D');
+    $componentTag = $_instance->getRenderedChildComponentTagName('uJrF91D');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('MRe2qiv');
+    $_instance->preserveRenderedChild('uJrF91D');
 } else {
     $response = \Livewire\Livewire::mount('sketch.upload-sketch');
     $html = $response->html();
-    $_instance->logRenderedChild('MRe2qiv', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('uJrF91D', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

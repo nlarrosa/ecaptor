@@ -18,8 +18,8 @@
                     <th>N°</th> 
                     <th>Fecha</th> 
                     <th>Cliente</th> 
-                    <th>Usuario</th>
                     <th>Producto</th>
+                    <th>Medida</th>
                     <th>Importe</th>
                     <th>Responsable</th>
                     <th>Estado</th>
@@ -31,10 +31,10 @@
                 @foreach ($saleProducts as $saleProduct)
                     <tr>
                         <th>{{ $saleProduct->Sale->id }}</th> 
-                        <td><div class="text-sm">{{ $saleProduct->Sale->created_at }}</div></td> 
+                        <td><div class="text-sm">{{ substr($saleProduct->Sale->created_at, 0, -9) }}</div></td> 
                         <td>{{ $saleProduct->Sale->User->bussines }}</td> 
-                        <td>{{ $saleProduct->Sale->User->name }} {{ $saleProduct->Sale->User->last_name }}</td>
                         <td>{{ $saleProduct->Product->Line->name }} - {{ $saleProduct->Product->Line->design }}</td>
+                        <td>{{ $saleProduct->Product->width }} x {{ $saleProduct->Product->height }} cm.</td>
                         <td><div class="font-bold">US$ {{ $saleProduct->total_price + $saleProduct->SaleBorderProduct->total_price }}</div></td>
                         <td><div class="font-semibold text-gray-400">{{ $saleProduct->Sale->responsability }}</div></td>
                         <td><div class="badge border-2 border-{{ $saleProduct->Sale->SaleStatus->color }} badge-{{ $saleProduct->Sale->SaleStatus->color }}">{{ $saleProduct->Sale->SaleStatus->name }}</div> </td>

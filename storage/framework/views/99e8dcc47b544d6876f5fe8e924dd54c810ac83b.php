@@ -50,14 +50,10 @@
                 <tr class="shadow-sm border">
                     <td>
                         <div class="flex items-center space-x-4">
-                            <div class="avatar mx-2">
-                                <div class="w-20 h-20 border border-primary">
-                                    <div class="grid w-20 h-20 bg-base-300 place-items-center">content</div>
-                                </div>
-                            </div> 
-                            <div>
+                            
+                            <div class=" ml-10">
                                 <div class="font-bold text-md opacity-75"><?php echo e($product->name); ?> | <?php echo e($product->Line->design); ?></div> 
-                                <div class="text-sm text-primary opacity-90"><?php echo e($product->width); ?> x <?php echo e($product->height); ?> cm.</div>
+                                <div class="text-sm text-primary font-bold opacity-90"><?php echo e($product->width); ?> x <?php echo e($product->height); ?> cm.</div>
                                 <div class="text-sm opacity-50"><?php echo e(($product->Line->border_include) ? 'Borde Incluido' : ''); ?></div>
                             </div>
                         </div>
@@ -85,15 +81,15 @@
 <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('cart.shopping-add-steps')->html();
-} elseif ($_instance->childHasBeenRendered('HtufYnT')) {
-    $componentId = $_instance->getRenderedChildComponentId('HtufYnT');
-    $componentTag = $_instance->getRenderedChildComponentTagName('HtufYnT');
+} elseif ($_instance->childHasBeenRendered('qqwAtxG')) {
+    $componentId = $_instance->getRenderedChildComponentId('qqwAtxG');
+    $componentTag = $_instance->getRenderedChildComponentTagName('qqwAtxG');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('HtufYnT');
+    $_instance->preserveRenderedChild('qqwAtxG');
 } else {
     $response = \Livewire\Livewire::mount('cart.shopping-add-steps');
     $html = $response->html();
-    $_instance->logRenderedChild('HtufYnT', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('qqwAtxG', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>;
