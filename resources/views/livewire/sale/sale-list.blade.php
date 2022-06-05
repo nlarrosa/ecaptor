@@ -30,15 +30,19 @@
             <tbody>
                 @foreach ($saleProducts as $saleProduct)
                     <tr>
-                        <th>{{ $saleProduct->Sale->id }}</th> 
+                        <th>{{ $saleProduct->id }}</th> 
                         <td><div class="text-sm">{{ substr($saleProduct->Sale->created_at, 0, -9) }}</div></td> 
                         <td>{{ $saleProduct->Sale->User->bussines }}</td> 
                         <td>{{ $saleProduct->Product->Line->name }} - {{ $saleProduct->Product->Line->design }}</td>
-                        <td>{{ $saleProduct->Product->width }} x {{ $saleProduct->Product->height }} cm.</td>
+                        <td>{{ $saleProduct->width }} x {{ $saleProduct->height }} cm.</td>
                         <td><div class="font-bold">US$ {{ $saleProduct->total_price + $saleProduct->SaleBorderProduct->total_price }}</div></td>
                         <td><div class="font-semibold text-gray-400">{{ $saleProduct->Sale->responsability }}</div></td>
                         <td><div class="badge border-2 border-{{ $saleProduct->Sale->SaleStatus->color }} badge-{{ $saleProduct->Sale->SaleStatus->color }}">{{ $saleProduct->Sale->SaleStatus->name }}</div> </td>
-                        <td><div class="badge border-2 border-primary badge-primary">muestra</div></td>
+                        <td>
+                            @foreach($saleProduct->saleSketchProduct as $sketchProduct)
+                            <div class="badge border-2 border-{{ $sketchProduct->StatusSketch->color }} badge-{{ $sketchProduct->StatusSketch->color }}">{{ $sketchProduct->StatusSketch->name }}</div>
+                            @endforeach
+                        </td>
                         <td>
                             <button wire:click="openModalDetail( {{ $saleProduct->id }})" class="btn btn-square btn-sm ">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,10 +55,9 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                                 </svg>
                             </button> 
+                            @if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.anulado'))
 
-                            @if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.finalizado'))
-
-                                @if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.anulado'))
+                                @if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.finalizado'))
 
                                     @if(!empty($saleProduct->SaleDesignProduct->type))
                                         <button wire:click="downloadLogoFile( {{ $saleProduct->id }} )" class="btn btn-square btn-sm btn-success">
@@ -68,21 +71,23 @@
                                                 </svg>
                                             @endif
                                         </button> 
-
-                                        <button  wire:click="openModalSketchUpload( {{ $saleProduct->id }})" class="btn btn-square btn-sm btn-secondary">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                            </svg>
-                                        </button> 
+                                        @if($saleProduct->Sale->SaleStatus->id == Config::get('ecaptor.saleStatus.nuevo')
+                                        || $saleProduct->Sale->SaleStatus->id == Config::get('ecaptor.saleStatus.preparacion'))
+                                            <button  wire:click="openModalSketchUpload( {{ $saleProduct->id }})" class="btn btn-square btn-sm btn-secondary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                </svg>
+                                            </button> 
+                                        @endif
                                     @endif 
                                     
+                                    <button wire:click="openModalConfirmCancel( {{ $saleProduct->Sale->id }} )" class="btn btn-square btn-sm btn-error">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button> 
                                 @endif
 
-                                <button wire:click="openModalConfirmCancel( {{ $saleProduct->Sale->id }} )" class="btn btn-square btn-sm btn-error">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button> 
                             @endif
                         </td>
                     </tr>

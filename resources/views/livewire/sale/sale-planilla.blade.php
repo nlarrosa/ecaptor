@@ -44,6 +44,7 @@
         <main>
             <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px; margin-top: 10px;">{{ $saleProduct->Product->name }} - {{ $saleProduct->Product->Line->design }}</div>
             <div style="margin-bottom:3px; font-size: 19px; font-weight:bolder">{{ $saleProduct->width }} x {{ $saleProduct->height }} cm.</div>
+            <div style="margin-bottom:3px; font-size: 19px;">Cantidad: {{ $saleProduct->quantity }} unid.</div>
             <div style="margin-bottom:3px; font-size: 19px;">{{ $saleProduct->Product->Line->type }}</div>
             <div style="margin-bottom:3px; font-size: 19px;">{{ $saleProduct->format }}</div>
             

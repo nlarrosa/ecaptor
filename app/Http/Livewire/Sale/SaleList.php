@@ -156,7 +156,8 @@ class SaleList extends Component
     public function render()
     {
         return view('livewire.sale.sale-list', [
-            'saleProducts' => SaleProduct::orderBy('sale_id', 'DESC')->paginate($this->registersView),
+            'saleProducts' => SaleProduct::with('SaleSketch')
+            ->orderBy('sale_id', 'DESC')->paginate($this->registersView),
         ]);
     }
 }

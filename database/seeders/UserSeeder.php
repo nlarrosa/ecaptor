@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                 'profile_id' => 1,
                 'status_id'  => 1,
                 'bussines' => 'MultiApp',
-                'rol_id' => 1,
+                'rol_id' => 2,
             ],
             [
                 'name' => 'Natalia',

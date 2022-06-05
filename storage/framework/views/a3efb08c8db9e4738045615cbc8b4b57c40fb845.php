@@ -44,6 +44,7 @@
         <main>
             <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px; margin-top: 10px;"><?php echo e($saleProduct->Product->name); ?> - <?php echo e($saleProduct->Product->Line->design); ?></div>
             <div style="margin-bottom:3px; font-size: 19px; font-weight:bolder"><?php echo e($saleProduct->width); ?> x <?php echo e($saleProduct->height); ?> cm.</div>
+            <div style="margin-bottom:3px; font-size: 19px;">Cantidad: <?php echo e($saleProduct->quantity); ?> unid.</div>
             <div style="margin-bottom:3px; font-size: 19px;"><?php echo e($saleProduct->Product->Line->type); ?></div>
             <div style="margin-bottom:3px; font-size: 19px;"><?php echo e($saleProduct->format); ?></div>
             

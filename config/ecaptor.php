@@ -32,6 +32,7 @@ return [
         'produccion'  => '3',
         'finalizado'  => '4',
         'anulado'     => '5',
+        'modificar'   => '6',
     ],
 
 

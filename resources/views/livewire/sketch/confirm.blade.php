@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        {{-- <x-modal-sketch-coment /> --}}
+        {{-- <x-modal-sketch-coment />  --}}
 
     </div>
 </div>

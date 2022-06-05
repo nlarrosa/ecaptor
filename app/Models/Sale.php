@@ -44,4 +44,14 @@ class Sale extends Model
 
         return $sale;
     }
+
+
+    public static function saleStatusModificar(int $saleId): Sale
+    {
+        $sale = Sale::findOrfail($saleId);
+        $sale->sale_status_id = config('ecaptor.saleStatus.preparacion');
+        $sale->update();
+
+        return $sale;
+    }
 }

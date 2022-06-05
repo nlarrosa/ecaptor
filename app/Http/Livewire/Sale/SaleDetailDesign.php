@@ -39,6 +39,7 @@ class SaleDetailDesign extends Component
         $this->saleProduct = '';
         $this->modalOpen   = '';
         $this->imgPath     = '';
+        $this->buttonStatus = false;
     }
         
 
@@ -109,7 +110,8 @@ class SaleDetailDesign extends Component
 
             if(!empty($this->saleProduct->SaleSketch->file_name))
             {
-                $this->imgPath = public_path('storage/sketchs/'. $this->saleProduct->SaleSketch->file_name);
+                // $this->imgPath = public_path('storage/sketchs/'. $this->saleProduct->SaleSketch->file_name);
+                $this->imgPath = storage_path('app/public/sketchs/'. $this->saleProduct->SaleSketch->file_name);
                 $imgBase64 = "data:image/png;base64," . base64_encode(file_get_contents($this->imgPath));
             }
             
@@ -139,21 +141,12 @@ class SaleDetailDesign extends Component
 
     public function buttonPrintPlanilla()
     {
+        
         if(!empty($this->saleProduct->SaleDesignProduct->type))
         {
-            $typeProduct = $this->saleProduct->SaleDesignProduct->type;
-            $this->buttonStatus = false;
-
-            if($typeProduct == config('ecaptor.design.type.archivo'))
-            {
-                return ($this->sketchStatus === config('ecaptor.sketchStatus.id.aprobado'))
-                ? $this->buttonStatus = true
-                : $this->buttonStatus = false;
-
-            } else {
-
-                return $this->buttonStatus = true;
-            }
+            return ($this->sketchStatus === config('ecaptor.sketchStatus.id.aprobado'))
+            ? $this->buttonStatus = true
+            : $this->buttonStatus = false;
         }
     }
 

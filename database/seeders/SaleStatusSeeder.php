@@ -20,6 +20,7 @@ class SaleStatusSeeder extends Seeder
             [ 'name' => 'Produccion',  'color' => 'info' ],
             [ 'name' => 'Finalizado',  'color' => 'success' ],
             [ 'name' => 'Anulado',     'color' => 'danger' ],
+            [ 'name' => 'Modificar',   'color' => 'secondary' ],
         ];
 
         

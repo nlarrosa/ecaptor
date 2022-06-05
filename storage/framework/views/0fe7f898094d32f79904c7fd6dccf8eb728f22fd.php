@@ -20,14 +20,14 @@
             <div key=<?php echo e($line->id); ?> class="card shadow-2xl lg:card-side bg-white text-primary-content">
                 <div class="card-body">
                     <a href="<?php echo e(route('cart.add', ['id' => $line->id])); ?>">
-                        <div class="grid grid-cols-2">
+                        <div class="grid grid-cols-3">
                             <div class="indicator">
-                                <div class="indicator-item indicator-bottom indicator-center badge badge-outline font-bold">New</div> 
+                                
                                 <img src="" alt="Image Lines Captor" class="h-36 w-48 border p-4">
                             </div>
                             <div>
                                 <div class="font-semibold text-gray-900 text-lg"><?php echo e($line->name); ?> | <?php echo e($line->design); ?></div>
-                                <div class="font-semibold text-primary text-md mb-10"><?php echo e($line->type); ?></div>
+                                <div class="font-semibold text-gray-500 text-md mb-10"><?php echo e($line->type); ?></div>
                                 
                                 <button class="btn btn-gray-900 btn-sm mt-5">COMPRAR</button>
                             </div>

@@ -60,6 +60,8 @@ class UploadSketch extends Component
             'sketchs.*' => 'required|mimes:jpg,jpeg,png|max:20480',
         ]);
 
+        
+
 
         foreach($this->sketchs as $sketch)
         {
@@ -77,22 +79,27 @@ class UploadSketch extends Component
                     'sale_product_id' => $this->saleProductId,
                     'status_sketch_id' => $sketchProduct['statusId'] + 1
                 ]);
-
+                
+                $saleProduct = SaleProduct::findOrFail($this->saleProductId);
+                $sale = Sale::saleStatusToUpdate($saleProduct->sale_id);
+                
             } else {
-
+                
                 $sketchProduct = SaleSketchProducts::findOrFail($this->saleProductId);
                 $sketchProduct->delete();
-
+                
                 $saleSketch = SaleSketchProducts::create([
                     'file_name' => $fileName,
                     'sale_product_id' => $this->saleProductId,
                     'status_sketch_id' => config('ecaptor.sketchStatus.id.enviado')
                 ]);
+                
+                $saleProduct = SaleProduct::findOrFail($this->saleProductId);
+                $sale = Sale::saleStatusModificar($saleProduct->sale_id);
+                
             }
         }
         
-        $saleProduct = SaleProduct::findOrFail($this->saleProductId);
-        $sale = Sale::saleStatusToUpdate($saleProduct->sale_id);
 
         $sale->User->notify(new SketchNotification($saleSketch));
 

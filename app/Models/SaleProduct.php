@@ -54,10 +54,10 @@ class SaleProduct extends Model
     }
 
 
-    // public function StatusSketch(): BelongsTo
-    // {
-    //     return $this->belongsTo(StatusSketch::class);
-    // }
-    
+    public function saleSketchProduct(): HasMany
+    {
+        return $this->hasMany(SaleSketchProducts::class);
+    }
+
     
 }

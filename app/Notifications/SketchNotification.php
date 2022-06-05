@@ -58,8 +58,10 @@ class SketchNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'sketch_id'   => $this->saleSketch->id,
-            'file_name'   => $this->saleSketch->file_name,
+            'sketch_id'     => $this->saleSketch->id,
+            'file_name'     => $this->saleSketch->file_name,
+            'sale_product_id'       => $this->saleSketch->sale_product_id,
+            'sketch_status' => $this->saleSketch->StatusSketch->name,
         ];
     }
 }

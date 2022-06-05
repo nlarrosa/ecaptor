@@ -18,11 +18,5 @@ class StatusSketch extends Model
     {
         return $this->hasMany(SaleSketchProducts::class);
     }
-
-
-    // public function SaleProducts(): HasMany
-    // {
-    //     return $this->hasMany(SaleProduct::class);
-    // }
     
 }

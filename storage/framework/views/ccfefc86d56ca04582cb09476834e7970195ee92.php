@@ -52,13 +52,13 @@
                             </td>
                             <td>
                                 <div class="text-xs font-bold opacity-80"><?php echo e($data[0]['cantidad'].' unid.'); ?></div>
-                                <div class="font-semibold text-md">$ <?php echo e($data[0]['product']['priceTotal']); ?></div>
+                                <div class="font-semibold text-md"><span class="text-sm">USD</span> $<?php echo e($data[0]['product']['priceTotal']); ?></div>
                             </td>
                             <td>
                                 <div class="text-gray-5 text-sm"> cant. <?php echo e($data[0]['bordes']['cant']); ?></div>
-                                <div class="font-semibold text-md">$ <?php echo e($data[0]['bordes']['totalPrice']); ?></div>
+                                <div class="font-semibold text-md"><span class="text-sm">USD</span> $<?php echo e($data[0]['bordes']['totalPrice']); ?></div>
                             </td>
-                            <td><div class="font-semibold text-md">$ <?php echo e($data[0]['product']['priceTotal'] + $data[0]['bordes']['totalPrice']); ?></div></td>
+                            <td><div class="font-semibold text-md"><span class="text-sm">USD</span> $<?php echo e($data[0]['product']['priceTotal'] + $data[0]['bordes']['totalPrice']); ?></div></td>
                             <td>
                                 <button wire:click="deleteItemCart('<?php echo e($productId); ?>')">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,19 +80,19 @@
                     <table>
                         <div class="grid grid-cols-2 mx-5 my-5">
                             <div class="text-sm font-semibold">SUBTOTAL</div>
-                            <div wire:model="subtotal" class="text-right font-semibold">$<?php echo e($subtotal); ?></div>
+                            <div wire:model="subtotal" class="text-right font-semibold"><span class="text-sm">USD</span> $<?php echo e($subtotal); ?></div>
                         </div>
                         <div class="grid grid-cols-2 mx-5 my-5">
                             <div class="text-sm font-semibold">BORDES</div>
-                            <div wire:model="totalBordes" class="text-right font-semibold">$<?php echo e($totalBordes); ?></div>
+                            <div wire:model="totalBordes" class="text-right font-semibold"> <span class="text-sm">USD</span> $<?php echo e($totalBordes); ?></div>
                         </div>
                         <div class="grid grid-cols-2 mx-5 my-5">
                             <div class="text-sm font-semibold">IMPUESTOS</div>
-                            <div wire:model="impuestos" class="text-right font-semibold">$<?php echo e($impuestos); ?></div>
+                            <div wire:model="impuestos" class="text-right font-semibold"><span class="text-sm">USD</span> $<?php echo e($impuestos); ?></div>
                         </div>
                         <div class="grid grid-cols-2 mx-1 px-5 py-2 rounded-lg my-10 bg-gray-300">
                             <div class=" text-lg text-gray-900 font-extrabold">TOTAL</div>
-                            <div wire:model="total" class=" text-lg text-gray-900 text-right font-extrabold">$<?php echo e($total); ?></div>
+                            <div wire:model="total" class=" text-lg text-gray-900 text-right font-extrabold"><span class="text-sm">USD</span> $<?php echo e($total); ?></div>
                         </div>
                     </table>
                 </div>
@@ -103,15 +103,15 @@
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('ui.alert', ['message' => 'No tiene productos agregados al carrito.', 'status' => 'info'])->html();
-} elseif ($_instance->childHasBeenRendered('ZU4GWtx')) {
-    $componentId = $_instance->getRenderedChildComponentId('ZU4GWtx');
-    $componentTag = $_instance->getRenderedChildComponentTagName('ZU4GWtx');
+} elseif ($_instance->childHasBeenRendered('S2h71O8')) {
+    $componentId = $_instance->getRenderedChildComponentId('S2h71O8');
+    $componentTag = $_instance->getRenderedChildComponentTagName('S2h71O8');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('ZU4GWtx');
+    $_instance->preserveRenderedChild('S2h71O8');
 } else {
     $response = \Livewire\Livewire::mount('ui.alert', ['message' => 'No tiene productos agregados al carrito.', 'status' => 'info']);
     $html = $response->html();
-    $_instance->logRenderedChild('ZU4GWtx', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('S2h71O8', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

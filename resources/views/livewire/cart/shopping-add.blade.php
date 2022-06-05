@@ -64,7 +64,7 @@
                     </td> 
                     <td>
                         <div class="text-sm opacity-50">Precio Sin Imp.</div>
-                        <div class="font-semibold text-lg">$ {{ $product->price }}</div>
+                        <div class="font-semibold text-lg"><span class="text-sm">USD</span> $ {{ $product->price }}</div>
                     </td> 
                     <th>
                         <button wire:click="addCart('{{ $product->id }}')"  class="btn btn-ghost">

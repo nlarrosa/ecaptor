@@ -6,6 +6,7 @@ use App\Models\SaleSketchProducts;
 use App\Models\User;
 use App\Notifications\SketchNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 
 class Confirm extends Component
@@ -63,11 +64,16 @@ class Confirm extends Component
         {
             $this->saleSketch->status_sketch_id = config('ecaptor.sketchStatus.id.aprobado');
             $this->saleSketch->update();
+
+            $usersAdmin = User::where('rol_id', 1)->get();
+            Notification::send($usersAdmin, new SketchNotification($this->saleSketch));
             
             $this->dispatchBrowserEvent('ModalAlertTimerSketch', [
                 'icon'   => 'success',
                 'title'  => 'Se envio la Aprobacion del Boceto',
             ]);
+
+            
 
             $this->btnDisabledConfirm = 'disabled';
             $this->btnDisabledModify  = 'disabled';

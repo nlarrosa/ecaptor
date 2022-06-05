@@ -60,7 +60,7 @@
                     </td> 
                     <td>
                         <div class="text-sm opacity-50">Precio Sin Imp.</div>
-                        <div class="font-semibold text-lg">$ <?php echo e($product->price); ?></div>
+                        <div class="font-semibold text-lg"><span class="text-sm">USD</span> $ <?php echo e($product->price); ?></div>
                     </td> 
                     <th>
                         <button wire:click="addCart('<?php echo e($product->id); ?>')"  class="btn btn-ghost">
@@ -81,15 +81,15 @@
 <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('cart.shopping-add-steps')->html();
-} elseif ($_instance->childHasBeenRendered('qqwAtxG')) {
-    $componentId = $_instance->getRenderedChildComponentId('qqwAtxG');
-    $componentTag = $_instance->getRenderedChildComponentTagName('qqwAtxG');
+} elseif ($_instance->childHasBeenRendered('H2zUMRi')) {
+    $componentId = $_instance->getRenderedChildComponentId('H2zUMRi');
+    $componentTag = $_instance->getRenderedChildComponentTagName('H2zUMRi');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('qqwAtxG');
+    $_instance->preserveRenderedChild('H2zUMRi');
 } else {
     $response = \Livewire\Livewire::mount('cart.shopping-add-steps');
     $html = $response->html();
-    $_instance->logRenderedChild('qqwAtxG', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('H2zUMRi', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>;

@@ -1,13 +1,7 @@
 <div>
     <div id="my-modal" class="modal <?php echo e($modalOpen); ?>">
-        <div class="modal-box">
-
-            <button wire:click="$set('modalOpen', '')" class="float-right">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
+        <div class="modal-box relative">
+            <label wire:click="$set('modalOpen', '')" for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
             <h1 class="text-gray-900 my-5 text-center font-extrabold text-xl">DETALLE DE PEDIDO </h1>
             <div class="flex flex-col w-full">
                 <div class="divider">
@@ -17,37 +11,37 @@
             <?php if(!empty($saleProduct)): ?>
                 <div class="grid grid-cols-2 gap-1 px-5">
                     <div class="font-bold my-2">
-                        <span class="text-lg">Cantidad</span>
+                        <span class="text-lg md:text-sm">Cantidad</span>
                     </div>
                     <div class="col-start-4 my-auto text-right"> <?php echo e($saleProduct->quantity); ?> Unid.</div>
                     <div class="font-bold my-2">
-                        <span class="text-lg">Producto</span>
+                        <span class="text-lg md:text-sm">Producto</span>
                     </div>
                     <div class="col-start-4  my-auto text-right"> <?php echo e($saleProduct->Product->Line->name); ?> <?php echo e($saleProduct->Product->Line->design); ?></div>
                     <div class="font-bold my-2">
-                        <span class="text-lg">Tipo</span>
+                        <span class="text-lg md:text-sm">Tipo</span>
                     </div>
                     <div class="col-start-4  my-auto text-right"> <?php echo e($saleProduct->Product->Line->type); ?> </div>
                     <div class="font-bold my-2">
-                        <span class="text-lg">Medida</span>
+                        <span class="text-lg md:text-sm">Medida</span>
                     </div>
                     <div class="col-start-4  my-auto text-right"> <?php echo e($saleProduct->width); ?> x <?php echo e($saleProduct->height); ?> cm.</div>
                     <div class="font-bold my-2">
-                        <span class="text-lg">Valor</span>
+                        <span class="text-lg md:text-sm">Valor</span>
                     </div>
                     <div class="col-start-4  my-auto text-right text-info"> US$ <?php echo e($saleProduct->total_price); ?> </div>
                     <div class="font-bold my-2">
-                        <span class="text-lg">Valor Borde</span>
+                        <span class="text-lg md:text-sm">Valor Borde</span>
                     </div>
                     <div class="col-start-4  my-auto text-right text-info"> US$ <?php echo e($saleProduct->SaleBorderProduct->total_price); ?> </div>
                     <div class="font-bold my-2">
-                        <span class="text-lg">Valor Total</span>
+                        <span class="text-lg md:text-sm">Valor Total</span>
                     </div>
                     <div class="col-start-4  my-auto text-right text-info font-extrabold"> US$ <?php echo e($saleProduct->total_price +  $saleProduct->SaleBorderProduct->total_price); ?> </div>
                     
                     <?php if(!empty($saleProduct->saleDesignProduct->type)): ?>
                         <div class="font-bold my-2">
-                            <span class="text-lg">Archivo</span>
+                            <span class="text-lg md:text-sm">Archivo</span>
                         </div>
                         <div class="col-start-4  my-auto text-right"> 
                             <?php echo e(($saleProduct->SaleDesignProduct->type == Config::get('ecaptor.design.type.archivo'))

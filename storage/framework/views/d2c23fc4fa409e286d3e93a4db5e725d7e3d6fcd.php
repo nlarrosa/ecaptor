@@ -30,15 +30,19 @@
             <tbody>
                 <?php $__currentLoopData = $saleProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $saleProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <th><?php echo e($saleProduct->Sale->id); ?></th> 
+                        <th><?php echo e($saleProduct->id); ?></th> 
                         <td><div class="text-sm"><?php echo e(substr($saleProduct->Sale->created_at, 0, -9)); ?></div></td> 
                         <td><?php echo e($saleProduct->Sale->User->bussines); ?></td> 
                         <td><?php echo e($saleProduct->Product->Line->name); ?> - <?php echo e($saleProduct->Product->Line->design); ?></td>
-                        <td><?php echo e($saleProduct->Product->width); ?> x <?php echo e($saleProduct->Product->height); ?> cm.</td>
+                        <td><?php echo e($saleProduct->width); ?> x <?php echo e($saleProduct->height); ?> cm.</td>
                         <td><div class="font-bold">US$ <?php echo e($saleProduct->total_price + $saleProduct->SaleBorderProduct->total_price); ?></div></td>
                         <td><div class="font-semibold text-gray-400"><?php echo e($saleProduct->Sale->responsability); ?></div></td>
                         <td><div class="badge border-2 border-<?php echo e($saleProduct->Sale->SaleStatus->color); ?> badge-<?php echo e($saleProduct->Sale->SaleStatus->color); ?>"><?php echo e($saleProduct->Sale->SaleStatus->name); ?></div> </td>
-                        <td><div class="badge border-2 border-primary badge-primary">muestra</div></td>
+                        <td>
+                            <?php $__currentLoopData = $saleProduct->saleSketchProduct; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sketchProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="badge border-2 border-<?php echo e($sketchProduct->StatusSketch->color); ?> badge-<?php echo e($sketchProduct->StatusSketch->color); ?>"><?php echo e($sketchProduct->StatusSketch->name); ?></div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </td>
                         <td>
                             <button wire:click="openModalDetail( <?php echo e($saleProduct->id); ?>)" class="btn btn-square btn-sm ">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,10 +55,9 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                                 </svg>
                             </button> 
+                            <?php if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.anulado')): ?>
 
-                            <?php if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.finalizado')): ?>
-
-                                <?php if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.anulado')): ?>
+                                <?php if($saleProduct->Sale->SaleStatus->id != Config::get('ecaptor.saleStatus.finalizado')): ?>
 
                                     <?php if(!empty($saleProduct->SaleDesignProduct->type)): ?>
                                         <button wire:click="downloadLogoFile( <?php echo e($saleProduct->id); ?> )" class="btn btn-square btn-sm btn-success">
@@ -68,21 +71,23 @@
                                                 </svg>
                                             <?php endif; ?>
                                         </button> 
-
-                                        <button  wire:click="openModalSketchUpload( <?php echo e($saleProduct->id); ?>)" class="btn btn-square btn-sm btn-secondary">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                            </svg>
-                                        </button> 
+                                        <?php if($saleProduct->Sale->SaleStatus->id == Config::get('ecaptor.saleStatus.nuevo')
+                                        || $saleProduct->Sale->SaleStatus->id == Config::get('ecaptor.saleStatus.preparacion')): ?>
+                                            <button  wire:click="openModalSketchUpload( <?php echo e($saleProduct->id); ?>)" class="btn btn-square btn-sm btn-secondary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                </svg>
+                                            </button> 
+                                        <?php endif; ?>
                                     <?php endif; ?> 
                                     
+                                    <button wire:click="openModalConfirmCancel( <?php echo e($saleProduct->Sale->id); ?> )" class="btn btn-square btn-sm btn-error">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button> 
                                 <?php endif; ?>
 
-                                <button wire:click="openModalConfirmCancel( <?php echo e($saleProduct->Sale->id); ?> )" class="btn btn-square btn-sm btn-error">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button> 
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -97,45 +102,45 @@
     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('sale.sale-detail')->html();
-} elseif ($_instance->childHasBeenRendered('x9rv2kY')) {
-    $componentId = $_instance->getRenderedChildComponentId('x9rv2kY');
-    $componentTag = $_instance->getRenderedChildComponentTagName('x9rv2kY');
+} elseif ($_instance->childHasBeenRendered('TEojXA4')) {
+    $componentId = $_instance->getRenderedChildComponentId('TEojXA4');
+    $componentTag = $_instance->getRenderedChildComponentTagName('TEojXA4');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('x9rv2kY');
+    $_instance->preserveRenderedChild('TEojXA4');
 } else {
     $response = \Livewire\Livewire::mount('sale.sale-detail');
     $html = $response->html();
-    $_instance->logRenderedChild('x9rv2kY', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('TEojXA4', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('sale.sale-detail-design')->html();
-} elseif ($_instance->childHasBeenRendered('i9SLWel')) {
-    $componentId = $_instance->getRenderedChildComponentId('i9SLWel');
-    $componentTag = $_instance->getRenderedChildComponentTagName('i9SLWel');
+} elseif ($_instance->childHasBeenRendered('oE1R2qx')) {
+    $componentId = $_instance->getRenderedChildComponentId('oE1R2qx');
+    $componentTag = $_instance->getRenderedChildComponentTagName('oE1R2qx');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('i9SLWel');
+    $_instance->preserveRenderedChild('oE1R2qx');
 } else {
     $response = \Livewire\Livewire::mount('sale.sale-detail-design');
     $html = $response->html();
-    $_instance->logRenderedChild('i9SLWel', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('oE1R2qx', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
     <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('sketch.upload-sketch')->html();
-} elseif ($_instance->childHasBeenRendered('uJrF91D')) {
-    $componentId = $_instance->getRenderedChildComponentId('uJrF91D');
-    $componentTag = $_instance->getRenderedChildComponentTagName('uJrF91D');
+} elseif ($_instance->childHasBeenRendered('M98hwJp')) {
+    $componentId = $_instance->getRenderedChildComponentId('M98hwJp');
+    $componentTag = $_instance->getRenderedChildComponentTagName('M98hwJp');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('uJrF91D');
+    $_instance->preserveRenderedChild('M98hwJp');
 } else {
     $response = \Livewire\Livewire::mount('sketch.upload-sketch');
     $html = $response->html();
-    $_instance->logRenderedChild('uJrF91D', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('M98hwJp', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
